@@ -51,4 +51,5 @@ return require('packer').startup(function(use)
 	  }
   }
   use { 'mhartington/formatter.nvim' }
+  use { 'codota/tabnine-nvim', run = "./dl_binaries.sh" }
 end)

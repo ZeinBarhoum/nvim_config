@@ -1,5 +1,3 @@
-require("zein.remap")
-require("zein.set")
 require('tabnine').setup({
   disable_auto_comment=true, 
   accept_keymap="<Tab>",

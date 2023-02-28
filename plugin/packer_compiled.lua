@@ -170,6 +170,11 @@ _G.packer_plugins = {
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/rose-pine",
     url = "https://github.com/rose-pine/neovim"
   },
+  ["tabnine-nvim"] = {
+    loaded = true,
+    path = "/home/zein/.local/share/nvim/site/pack/packer/start/tabnine-nvim",
+    url = "https://github.com/codota/tabnine-nvim"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/telescope.nvim",

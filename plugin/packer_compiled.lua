@@ -120,6 +120,11 @@ _G.packer_plugins = {
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/friendly-snippets",
     url = "https://github.com/rafamadriz/friendly-snippets"
   },
+  gruvbox = {
+    loaded = true,
+    path = "/home/zein/.local/share/nvim/site/pack/packer/start/gruvbox",
+    url = "https://github.com/morhetz/gruvbox"
+  },
   harpoon = {
     loaded = true,
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/harpoon",
@@ -200,6 +205,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["tokyonight.nvim"] = {
+    loaded = true,
+    path = "/home/zein/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
+    url = "https://github.com/folke/tokyonight.nvim"
   },
   undotree = {
     loaded = true,

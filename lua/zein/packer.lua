@@ -68,4 +68,6 @@ return require('packer').startup(function(use)
             require('Comment').setup()
         end
     }
+    use { 'morhetz/gruvbox' }
+    use { 'folke/tokyonight.nvim' }
 end)

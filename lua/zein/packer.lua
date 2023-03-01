@@ -62,4 +62,10 @@ return require('packer').startup(function(use)
     use { 'nvim-telescope/telescope-symbols.nvim' }
     --use 'nvim-tree/nvim-web-devicons'
     --use { 'romgrk/barbar.nvim', requires = 'nvim-web-devicons' }
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
 end)

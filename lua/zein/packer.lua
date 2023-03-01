@@ -52,16 +52,9 @@ return require('packer').startup(function(use)
     }
     use { 'mhartington/formatter.nvim' }
     use { 'codota/tabnine-nvim', run = "./dl_binaries.sh" }
-    use {
-        'nvim-tree/nvim-tree.lua',
-        requires = {
-            'nvim-tree/nvim-web-devicons', -- optional, for file icons
-        },
-        tag = 'nightly' -- optional, updated every week. (see issue #1193)
-    }
     use { 'nvim-telescope/telescope-symbols.nvim' }
-    --use 'nvim-tree/nvim-web-devicons'
-    --use { 'romgrk/barbar.nvim', requires = 'nvim-web-devicons' }
+    use { 'nvim-tree/nvim-web-devicons' }
+    use { 'romgrk/barbar.nvim', requires = 'nvim-web-devicons' }
     use {
         'numToStr/Comment.nvim',
         config = function()
@@ -70,4 +63,11 @@ return require('packer').startup(function(use)
     }
     use { 'morhetz/gruvbox' }
     use { 'folke/tokyonight.nvim' }
+    use {
+        'nvim-tree/nvim-tree.lua',
+        requires = {
+            'nvim-tree/nvim-web-devicons', -- optional, for file icons
+        },
+        tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    }
 end)

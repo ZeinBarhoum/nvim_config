@@ -64,6 +64,9 @@ return require('packer').startup(function(use)
     }
     use { 'morhetz/gruvbox' }
     use { 'folke/tokyonight.nvim' }
+    use { 'tiagovla/tokyodark.nvim' }
+    use { 'sainnhe/edge' }
+    use { "bluz71/vim-nightfly-colors", as = "nightfly" }
     use {
         'nvim-tree/nvim-tree.lua',
         requires = {
@@ -88,4 +91,6 @@ return require('packer').startup(function(use)
         "SmiteshP/nvim-navic",
         requires = "neovim/nvim-lspconfig"
     }
+    use { 'michaelb/sniprun', run = 'bash ./install.sh' }
+    use { "catppuccin/nvim", as = "catppuccin" }
 end)

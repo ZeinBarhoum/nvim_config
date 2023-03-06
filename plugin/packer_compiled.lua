@@ -98,6 +98,11 @@ _G.packer_plugins = {
     path = "/home/zein/.local/share/nvim/site/pack/packer/opt/barbecue.nvim",
     url = "https://github.com/utilyre/barbecue.nvim"
   },
+  catppuccin = {
+    loaded = true,
+    path = "/home/zein/.local/share/nvim/site/pack/packer/start/catppuccin",
+    url = "https://github.com/catppuccin/nvim"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -122,6 +127,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
+  },
+  edge = {
+    loaded = true,
+    path = "/home/zein/.local/share/nvim/site/pack/packer/start/edge",
+    url = "https://github.com/sainnhe/edge"
   },
   ["formatter.nvim"] = {
     loaded = true,
@@ -157,6 +167,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
+  },
+  nightfly = {
+    loaded = true,
+    path = "/home/zein/.local/share/nvim/site/pack/packer/start/nightfly",
+    url = "https://github.com/bluz71/vim-nightfly-colors"
   },
   ["nvim-cmp"] = {
     loaded = true,
@@ -214,6 +229,11 @@ _G.packer_plugins = {
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/smartcolumn.nvim",
     url = "https://github.com/m4xshen/smartcolumn.nvim"
   },
+  sniprun = {
+    loaded = true,
+    path = "/home/zein/.local/share/nvim/site/pack/packer/start/sniprun",
+    url = "https://github.com/michaelb/sniprun"
+  },
   ["tabnine-nvim"] = {
     loaded = true,
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/tabnine-nvim",
@@ -228,6 +248,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/zein/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["tokyodark.nvim"] = {
+    loaded = true,
+    path = "/home/zein/.local/share/nvim/site/pack/packer/start/tokyodark.nvim",
+    url = "https://github.com/tiagovla/tokyodark.nvim"
   },
   ["tokyonight.nvim"] = {
     loaded = true,

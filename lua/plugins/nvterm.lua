@@ -1,0 +1,4 @@
+return {
+	"zbirenbaum/nvterm",
+	opts = {},
+}

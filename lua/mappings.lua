@@ -229,3 +229,8 @@ vim.keymap.set("n", "<leader>cco", ":CopilotChatToggle<CR>", { silent = true, de
 vim.keymap.set("n", "<M-o>", ":CopilotChatToggle<CR>", { silent = true, desc = "CopilotChat - Toggle" })
 vim.keymap.set("n", "<leader>ccs", ":CopilotChatStop<CR>", { silent = true, desc = "CopilotChat - Stop" })
 vim.keymap.set("n", "<leader>ccr", ":CopilotChatReset<CR>", { silent = true, desc = "CopilotChat - Reset" })
+
+-- bufferline
+vim.keymap.set("n", "<tab>", "<Cmd>BufferNext<Cr>", { desc = "Next Buffer", remap = false })
+vim.keymap.set("n", "<S-tab>", "<Cmd>BufferPrevious<Cr>", { desc = "Previous Buffer", remap = false })
+vim.keymap.set("n", "<leader>x", "<Cmd>BufferClose<Cr>", { desc = "Close Buffer", remap = false })

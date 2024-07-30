@@ -84,6 +84,7 @@ return { -- LSP Configuration & Plugins
 			"stylua", -- Used to format Lua code
 			"black",
 			"mypy",
+			"markdownlint",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

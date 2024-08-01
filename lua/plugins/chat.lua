@@ -11,10 +11,9 @@ return {
 			debug = false, -- Enable debugging
 			window = {
 				layout = "float",
-				relative = "cursor",
-				width = 1,
-				height = 0.4,
-				row = 1,
+				relative = "editor",
+				width = 0.6,
+				height = 0.8,
 			},
 		},
 	},

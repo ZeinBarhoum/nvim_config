@@ -61,6 +61,7 @@ return { -- LSP Configuration & Plugins
 		local servers = {
 			clangd = {},
 			pyright = {},
+			texlab = {},
 			lua_ls = {
 				-- cmd = {...},
 				-- filetypes = { ...},

@@ -140,7 +140,7 @@ map_lsp("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplem
 map_lsp("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 map_lsp("gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype definition")
 map_lsp("<leader>fs", require("telescope.builtin").lsp_document_symbols, "[F]ind document [S]ymbols")
-map_lsp("<leader>fws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [W]orkspace [S]ymbols")
+-- map_lsp("<leader>fws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [W]orkspace [S]ymbols")
 map_lsp("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 map_lsp("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 

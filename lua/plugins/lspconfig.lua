@@ -86,6 +86,7 @@ return { -- LSP Configuration & Plugins
 			"black",
 			"mypy",
 			"markdownlint",
+			"xmlformatter",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

@@ -9,7 +9,8 @@ return {
 	end,
 	opts = {
 		sidebar_filetypes = {
-			["neo-tree"] = true,
+			["neo-tree"] = false,
+			NvimTree = true,
 		},
 	},
 }

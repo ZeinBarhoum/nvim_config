@@ -5,6 +5,10 @@ return {
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 	},
+	keys = {
+		{ "<C-n>", ":NvimTreeToggle<CR>", desc = "NvimTree toggle" },
+		{ "<leader>-n", ":NvimTreeFocus<CR>", desc = "NvimTree focus" },
+	},
 	config = function()
 		require("nvim-tree").setup({
 			filters = {
@@ -26,8 +30,8 @@ return {
 				preserve_window_proportions = true,
 			},
 			git = {
-				enable = false,
-				ignore = true,
+				enable = true,
+				ignore = false,
 			},
 			filesystem_watchers = {
 				enable = true,
@@ -38,7 +42,7 @@ return {
 				},
 			},
 			renderer = {
-				root_folder_label = false,
+				root_folder_label = true,
 				highlight_git = false,
 				highlight_opened_files = "none",
 
@@ -51,7 +55,7 @@ return {
 						file = true,
 						folder = true,
 						folder_arrow = true,
-						git = false,
+						git = true,
 					},
 
 					glyphs = {

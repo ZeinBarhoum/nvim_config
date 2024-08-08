@@ -20,4 +20,5 @@ return {
 			},
 		},
 	},
+	enabled = false, -- disable
 }

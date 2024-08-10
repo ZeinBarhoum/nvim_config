@@ -24,6 +24,11 @@ return {
 				end,
 				desc = "Debug: Set Breakpoint",
 			},
+			{ "<leader>ds", dap.continue, desc = "Debug: Start/Continue" },
+			{ "<leader>dr", dap.restart, desc = "Debug: Restart" },
+			{ "<leader>dc", dap.close, desc = "Debug: Close" },
+			{ "<leader>duo", dapui.open, desc = "Debug: Open UI" },
+			{ "<leader>duc", dapui.close, desc = "Debug: Close UI" },
 			-- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
 			{ "<F7>", dapui.toggle, desc = "Debug: See last session result." },
 			unpack(keys),
@@ -58,9 +63,9 @@ return {
 			},
 		})
 
-		dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-		dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-		dap.listeners.before.event_exited["dapui_config"] = dapui.close
+		-- dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+		-- dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+		-- dap.listeners.before.event_exited["dapui_config"] = dapui.close
 
 		require("dap-python").setup("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
 	end,

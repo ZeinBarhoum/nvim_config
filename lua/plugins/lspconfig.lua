@@ -62,6 +62,8 @@ return { -- LSP Configuration & Plugins
 			clangd = {},
 			pyright = {},
 			texlab = {},
+			cmake = {},
+			["rust-analyzer"] = {},
 			lua_ls = {
 				settings = {
 					Lua = {
@@ -78,8 +80,10 @@ return { -- LSP Configuration & Plugins
 		vim.list_extend(ensure_installed, {
 			"stylua",
 			"black",
+			"docformatter",
 			"markdownlint",
 			"xmlformatter",
+			"clang-format",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

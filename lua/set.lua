@@ -44,4 +44,5 @@ vim.cmd([[
   autocmd BufEnter *.cc :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
   autocmd BufEnter *.cpp :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
   autocmd BufEnter *.h :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
+  autocmd BufEnter *.hpp :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
 ]])

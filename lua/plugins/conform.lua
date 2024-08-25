@@ -1,8 +1,10 @@
 return { -- Autoformat
-	"stevearc/conform.nvim",
+	-- "stevearc/conform.nvim",
+	dir = "~/personal/github/conform.nvim/",
 	event = "VeryLazy",
 	cmd = { "ConformInfo" },
 	opts = {
+		log_level = vim.log.levels.DEBUG,
 		notify_on_error = false,
 		format_on_save = function(bufnr)
 			-- Disable with a global or buffer-local variable
@@ -20,9 +22,10 @@ return { -- Autoformat
 		end,
 		formatters_by_ft = {
 			lua = { "stylua" },
-			python = { "black" },
+			python = { "black", "docformatter" },
 			xml = { "xmlformat" },
 			sdf = { "xmlformat" },
+			cpp = { "clang_format" },
 		},
 	},
 	config = function(_, opts)

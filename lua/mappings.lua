@@ -193,8 +193,8 @@ vim.keymap.set("n", "N", "Nzzzv")
 
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 -- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+-- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
@@ -246,6 +246,9 @@ end, { desc = "Harpoon Add" })
 vim.keymap.set("n", "<leader>hd", function()
 	require("harpoon"):list():remove()
 end, { desc = "Harpoon Remove" })
+vim.keymap.set("n", "<leader>hc", function()
+	require("harpoon"):list():clear()
+end, { desc = "Harpoon Clear" })
 vim.keymap.set("n", "<leader>hl", function()
 	require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
 end, { desc = "Harpoon List" })
@@ -270,3 +273,23 @@ end)
 vim.keymap.set("n", "<leader>hn", function()
 	require("harpoon"):list():next()
 end)
+
+-- molten
+vim.keymap.set("n", "<leader>j", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "run operator selection" })
+vim.keymap.set("n", "<M-r>", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "run operator selection" })
+vim.keymap.set("n", "<leader>jj", ":MoltenEvaluateLine<CR>", { silent = true, desc = "evaluate line" })
+vim.keymap.set(
+	"v",
+	"<leader>j",
+	":<C-u>MoltenEvaluateVisual<CR>gv",
+	{ silent = true, desc = "evaluate visual selection" }
+)
+vim.keymap.set("v", "<M-r>", ":<C-u>MoltenEvaluateVisual<CR>gv", { silent = true, desc = "evaluate visual selection" })
+vim.keymap.set("n", "<leader>jc", ":MoltenReevaluateCell<CR>", { silent = true, desc = "re-evaluate cell" })
+vim.keymap.set("n", "<leader>jd", ":MoltenDelete<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>jo", ":MoltenShowOutput<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>jr", ":MoltenRestart<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>ji", ":MoltenInterrupt<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>js", ":MoltenSave<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>jl", ":MoltenLoad<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>jq", ":noautocmd MoltenEnterOutput<CR>", { noremap = true, silent = true })

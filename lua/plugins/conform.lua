@@ -1,6 +1,5 @@
 return { -- Autoformat
-	-- "stevearc/conform.nvim",
-	dir = "~/personal/github/conform.nvim/",
+	"stevearc/conform.nvim",
 	event = "VeryLazy",
 	cmd = { "ConformInfo" },
 	opts = {

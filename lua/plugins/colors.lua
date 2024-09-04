@@ -2,5 +2,15 @@ local tokyo = {
 	"folke/tokyonight.nvim",
 	priority = 1000, -- Make sure to load this before all the other start plugins.
 }
-
-return { tokyo }
+local monokai = {
+	"loctvl842/monokai-pro.nvim",
+	priority = 1000,
+	opts = {
+		filter = "classic",
+	},
+}
+local solarized = {
+	"Tsuzat/NeoSolarized.nvim",
+	priority = 1000,
+}
+return { tokyo, monokai, solarized }

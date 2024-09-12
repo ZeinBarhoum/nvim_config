@@ -25,6 +25,7 @@ return { -- Autoformat
 			xml = { "xmlformat" },
 			sdf = { "xmlformat" },
 			cpp = { "clang_format" },
+			markdown = { "mdformat" },
 		},
 	},
 	config = function(_, opts)

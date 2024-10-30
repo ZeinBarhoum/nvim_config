@@ -25,6 +25,7 @@ return { -- Autoformat
 			xml = { "xmlformat" },
 			sdf = { "xmlformat" },
 			cpp = { "clang_format" },
+			tex = { "latexindent" },
 		},
 	},
 	config = function(_, opts)
@@ -47,5 +48,6 @@ return { -- Autoformat
 		end, {
 			desc = "Re-enable autoformat-on-save",
 		})
+		require("conform").formatters.latexindent = { prepend_args = { "-m" } }
 	end,
 }

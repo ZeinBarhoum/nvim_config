@@ -84,6 +84,7 @@ return { -- LSP Configuration & Plugins
 			"markdownlint",
 			"xmlformatter",
 			"clang-format",
+			"latexindent",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

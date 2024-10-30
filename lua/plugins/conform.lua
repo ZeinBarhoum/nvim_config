@@ -26,6 +26,7 @@ return { -- Autoformat
 			sdf = { "xmlformat" },
 			cpp = { "clang_format" },
 			tex = { "latexindent" },
+			markdown = { "mdformat" },
 		},
 	},
 	config = function(_, opts)

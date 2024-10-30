@@ -82,6 +82,7 @@ return { -- LSP Configuration & Plugins
 			"black",
 			"docformatter",
 			"markdownlint",
+			"mdformat",
 			"xmlformatter",
 			"clang-format",
 			"latexindent",

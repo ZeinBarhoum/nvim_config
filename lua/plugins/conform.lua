@@ -27,6 +27,7 @@ return { -- Autoformat
 			cpp = { "clang_format" },
 			tex = { "latexindent" },
 			markdown = { "mdformat" },
+			yaml = { "yamlfix" },
 		},
 	},
 	config = function(_, opts)

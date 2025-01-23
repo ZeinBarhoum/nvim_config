@@ -295,8 +295,3 @@ vim.keymap.set("n", "<leader>js", ":MoltenSave<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>jl", ":MoltenLoad<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>jq", ":noautocmd MoltenEnterOutput<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>jx", ":MoltenOpenInBrowser<CR>", { desc = "open output in browser", silent = true })
-
-local runner = require("quarto.runner")
-vim.keymap.set("n", "<localleader>rc", runner.run_cell, { desc = "run cell", silent = true })
-vim.keymap.set("n", "<localleader>rA", runner.run_all, { desc = "run all cells", silent = true })
-vim.keymap.set("n", "<localleader>rl", runner.run_line, { desc = "run line", silent = true })

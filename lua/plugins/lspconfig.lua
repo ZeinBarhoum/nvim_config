@@ -81,7 +81,6 @@ return { -- LSP Configuration & Plugins
 			"stylua",
 			"black",
 			"docformatter",
-			"markdownlint",
 			"mdformat",
 			"xmlformatter",
 			"clang-format",

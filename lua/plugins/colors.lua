@@ -13,4 +13,14 @@ local solarized = {
 	"Tsuzat/NeoSolarized.nvim",
 	priority = 1000,
 }
-return { tokyo, monokai, solarized }
+local catppuccino = {
+	"catppuccin/nvim",
+	name = "catppuccin",
+	priority = 1000,
+}
+local onedardk = {
+	"navarasu/onedark.nvim",
+	priority = 1000,
+}
+
+return { tokyo, monokai, solarized, catppuccino, onedardk }

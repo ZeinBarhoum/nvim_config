@@ -27,8 +27,12 @@ vim.keymap.set("n", "<leader>b", "<cmd>enew<CR>", { desc = "New buffer" })
 -- duplicated
 
 -- Terminal mode
---vim.keymap.set('t', '<C-x>', vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true), { desc = 'Escape terminal mode' })
--- duplicated
+vim.keymap.set(
+	"t",
+	"<C-x>",
+	vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true),
+	{ desc = "Escape terminal mode" }
+)
 
 -- Visual mode
 vim.keymap.set("v", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { desc = "Move up", expr = true })

@@ -46,3 +46,9 @@ vim.cmd([[
   autocmd BufEnter *.h :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
   autocmd BufEnter *.hpp :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
 ]])
+
+-- for .launch files on ROS
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.launch",
+	command = "set filetype=xml",
+})

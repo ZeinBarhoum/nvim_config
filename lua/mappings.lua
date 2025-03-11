@@ -68,6 +68,13 @@ vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "[F]ind [O]ld Files" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind existing [B]uffers" })
 
+vim.keymap.set(
+	"n",
+	"<leader>fp",
+	":lua require'telescope'.extensions.project.project{}<CR>",
+	{ desc = "[F]ind [P]roject" }
+)
+
 -- Slightly advanced example of overriding default behavior and theme
 vim.keymap.set("n", "<leader>fc", builtin.current_buffer_fuzzy_find, { desc = "[F]ind in [C]urrent buffer" })
 

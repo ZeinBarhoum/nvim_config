@@ -13,7 +13,7 @@ return {
 			settings = {
 				search = {
 					micromamba = {
-						command = "fd --full-path '^/home/zein/micromamba/envs/.*/python$' --type symlink",
+						command = "fd --full-path 'micromamba/envs/.*/python$' --type symlink ~",
 					},
 				},
 			},

@@ -86,6 +86,7 @@ return { -- LSP Configuration & Plugins
 			"clang-format",
 			"latexindent",
 			"yamlfix",
+			"cmakelang",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

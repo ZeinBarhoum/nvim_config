@@ -28,6 +28,7 @@ return { -- Autoformat
 			tex = { "latexindent" },
 			markdown = { "mdformat" },
 			yaml = { "yamlfix" },
+			cmake = { "cmake-format" },
 		},
 	},
 	config = function(_, opts)

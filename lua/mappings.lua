@@ -306,3 +306,6 @@ vim.keymap.set("n", "<leader>js", ":MoltenSave<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>jl", ":MoltenLoad<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>jq", ":noautocmd MoltenEnterOutput<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>jx", ":MoltenOpenInBrowser<CR>", { desc = "open output in browser", silent = true })
+
+-- venv-selector
+vim.keymap.set("n", "<leader>vs", "<cmd>VenvSelect<cr>", { desc = "Select virtual environment" })

@@ -19,7 +19,4 @@ return {
 			},
 		})
 	end,
-	keys = {
-		{ "<leader>vs", "<cmd>VenvSelect<cr>" },
-	},
 }

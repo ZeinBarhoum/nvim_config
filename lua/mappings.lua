@@ -309,3 +309,6 @@ vim.keymap.set("n", "<leader>jx", ":MoltenOpenInBrowser<CR>", { desc = "open out
 
 -- venv-selector
 vim.keymap.set("n", "<leader>vs", "<cmd>VenvSelect<cr>", { desc = "Select virtual environment" })
+
+-- markdown preview
+vim.keymap.set("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Markdown preview" })

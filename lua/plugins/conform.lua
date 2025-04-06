@@ -51,6 +51,7 @@ return { -- Autoformat
 		end, {
 			desc = "Re-enable autoformat-on-save",
 		})
-		require("conform").formatters.latexindent = { prepend_args = { "-m" } }
+		require("conform").formatters.latexindent =
+			{ prepend_args = { "-m", "--yaml=modifyLineBreaks:textWrapOptions:columns:80" } }
 	end,
 }

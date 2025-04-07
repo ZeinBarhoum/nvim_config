@@ -214,27 +214,8 @@ vim.keymap.set("n", "<C-g>", "<cmd>silent !tmux neww goto<CR>")
 vim.keymap.set("n", "<leader>ww", "<C-w>w")
 
 -- Copilot Chat
-vim.keymap.set("n", "<leader>cch", function()
-	local actions = require("CopilotChat.actions")
-	require("CopilotChat.integrations.telescope").pick(actions.help_actions())
-end, { silent = true, desc = "CopilotChat - Help actions" })
 
-vim.keymap.set("n", "<leader>ccp", function()
-	local actions = require("CopilotChat.actions")
-	require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-end, { silent = true, desc = "CopilotChat - Prompt actions" })
-
-vim.keymap.set("n", "<leader>ccb", function()
-	local input = vim.fn.input("Quick Chat: ")
-	if input ~= "" then
-		require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-	end
-end, { silent = true, desc = "CopilotChat - Buffer chat" })
-
-vim.keymap.set("n", "<leader>cco", ":CopilotChatToggle<CR>", { silent = true, desc = "CopilotChat - Toggle" })
 vim.keymap.set("n", "<M-o>", ":CopilotChatToggle<CR>", { silent = true, desc = "CopilotChat - Toggle" })
-vim.keymap.set("n", "<leader>ccs", ":CopilotChatStop<CR>", { silent = true, desc = "CopilotChat - Stop" })
-vim.keymap.set("n", "<leader>ccr", ":CopilotChatReset<CR>", { silent = true, desc = "CopilotChat - Reset" })
 
 -- bufferline
 vim.keymap.set("n", "<tab>", "<Cmd>BufferNext<Cr>", { desc = "Next Buffer", remap = false })

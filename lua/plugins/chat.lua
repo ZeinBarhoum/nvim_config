@@ -48,11 +48,18 @@ return {
 	},
 	build = "make tiktoken",
 	opts = {
+		window = {
+			layout = "vertical",
+			relative = "editor",
+			width = 0.3,
+			height = 1.0,
+			column = "right",
+		},
+
 		question_header = "## User ",
 		answer_header = "## Copilot ",
 		error_header = "## Error ",
 		prompts = prompts,
-		-- model = "claude-3.7-sonnet",
 		mappings = {
 			-- Use tab for completion
 			complete = {

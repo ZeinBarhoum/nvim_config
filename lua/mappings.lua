@@ -293,3 +293,7 @@ vim.keymap.set("n", "<leader>vs", "<cmd>VenvSelect<cr>", { desc = "Select virtua
 
 -- markdown preview
 vim.keymap.set("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Markdown preview" })
+
+-- Avatae
+vim.keymap.set({ "n", "i" }, "<M-a>", "<cmd>AvanteToggle<cr>", { desc = "Avante Toggle" })
+vim.keymap.set({ "n", "i" }, "<M-e>", "<cmd>AvanteEdit<cr>", { desc = "Avante Toggle" })

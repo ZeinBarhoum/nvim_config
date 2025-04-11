@@ -31,9 +31,29 @@ local rose_pine = {
 	name = "rose-pine",
 	opts = {
 		styles = {
-			transparency = false,
+			transparency = true,
 		},
 	},
 }
-
-return { tokyo, monokai, solarized, catppuccino, onedardk, rose_pine }
+local moonfly = {
+	"bluz71/vim-moonfly-colors",
+	name = "moonfly",
+	priority = 1000,
+}
+local nightbox = {
+	"EdenEast/nightfox.nvim",
+}
+local oxocarbon = {
+	"nyoom-engineering/oxocarbon.nvim",
+}
+local github_theme = {
+	"projekt0n/github-nvim-theme",
+	config = function()
+		require("github-theme").setup({
+			options = {
+				transparent = true,
+			},
+		})
+	end,
+}
+return { tokyo, monokai, solarized, catppuccino, onedardk, rose_pine, moonfly, nightbox, oxocarbon, github_theme }

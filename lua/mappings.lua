@@ -117,7 +117,7 @@ vim.keymap.set(
 )
 vim.keymap.set(
 	"n",
-	"])d",
+	"]d",
 	'<Cmd>lua vim.diagnostic.goto_next({ float = { border = "rounded" } })<CR>',
 	{ desc = "Go to next diagnostic" }
 )

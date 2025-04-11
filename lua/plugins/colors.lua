@@ -17,10 +17,23 @@ local catppuccino = {
 	"catppuccin/nvim",
 	name = "catppuccin",
 	priority = 1000,
+	opts = {
+		transparent_background = true,
+	},
 }
 local onedardk = {
 	"navarasu/onedark.nvim",
 	priority = 1000,
 }
 
-return { tokyo, monokai, solarized, catppuccino, onedardk }
+local rose_pine = {
+	"rose-pine/neovim",
+	name = "rose-pine",
+	opts = {
+		styles = {
+			transparency = false,
+		},
+	},
+}
+
+return { tokyo, monokai, solarized, catppuccino, onedardk, rose_pine }

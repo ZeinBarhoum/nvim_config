@@ -34,6 +34,7 @@ vim.opt.laststatus = 3
 vim.wo.foldmethod = "expr"
 vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldlevel = 99
+vim.g.transparent_background = false
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",

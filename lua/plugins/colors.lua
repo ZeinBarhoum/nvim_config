@@ -1,3 +1,5 @@
+local is_transparent = vim.g.transparent_background or false
+
 local tokyo = {
 	"folke/tokyonight.nvim",
 	priority = 1000, -- Make sure to load this before all the other start plugins.
@@ -18,7 +20,7 @@ local catppuccino = {
 	name = "catppuccin",
 	priority = 1000,
 	opts = {
-		transparent_background = true,
+		transparent_background = is_transparent,
 	},
 }
 local onedardk = {
@@ -31,7 +33,7 @@ local rose_pine = {
 	name = "rose-pine",
 	opts = {
 		styles = {
-			transparency = true,
+			transparency = is_transparent,
 		},
 	},
 }
@@ -51,7 +53,7 @@ local github_theme = {
 	config = function()
 		require("github-theme").setup({
 			options = {
-				transparent = true,
+				transparent = is_transparent,
 			},
 		})
 	end,

@@ -87,6 +87,7 @@ return { -- LSP Configuration & Plugins
 			"latexindent",
 			"yamlfix",
 			"cmakelang",
+			"taplo",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

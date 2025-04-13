@@ -29,6 +29,7 @@ return { -- Autoformat
 			markdown = { "mdformat" },
 			yaml = { "yamlfix" },
 			cmake = { "cmake-format" },
+			toml = { "taplo" },
 		},
 	},
 	config = function(_, opts)

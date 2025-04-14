@@ -220,6 +220,7 @@ vim.keymap.set("n", "<M-o>", ":CopilotChatToggle<CR>", { silent = true, desc = "
 vim.keymap.set("n", "<tab>", "<Cmd>BufferNext<Cr>", { desc = "Next Buffer", remap = false })
 vim.keymap.set("n", "<S-tab>", "<Cmd>BufferPrevious<Cr>", { desc = "Previous Buffer", remap = false })
 vim.keymap.set("n", "<leader>x", "<Cmd>BufferClose<Cr>", { desc = "Close Buffer", remap = false })
+vim.keymap.set("n", "<C-x>", "<Cmd>BufferCloseAllButCurrent<Cr>", { desc = "Close All But Current", remap = false })
 
 -- refactoring
 vim.keymap.set("x", "<leader>re", ":Refactor extract ")

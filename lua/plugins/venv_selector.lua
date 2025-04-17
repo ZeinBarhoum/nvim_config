@@ -15,6 +15,9 @@ return {
 					micromamba = {
 						command = "fd --full-path 'micromamba/envs/.*/python$' --type symlink ~",
 					},
+					mamba = {
+						command = "fd --full-path 'mamba/envs/.*/python$' --type symlink ~",
+					},
 				},
 			},
 		})

@@ -3,5 +3,5 @@ return {
 	opts = {
 		file_types = { "markdown", "copilot-chat", "Avante" },
 	},
-	ft = { "markdown", "copilot-chat", "Avante" },
+	ft = { "copilot-chat", "Avante" },
 }

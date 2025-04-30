@@ -18,6 +18,9 @@ return {
 					mamba = {
 						command = "fd --full-path 'mamba/envs/.*/python$' --type symlink ~",
 					},
+					conda = {
+						command = "fd --full-path 'conda/envs/.*/python$' --type symlink ~",
+					},
 				},
 			},
 		})

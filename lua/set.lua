@@ -45,11 +45,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.cmd([[
-  autocmd BufEnter *.py :setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
-  autocmd BufEnter *.cc :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
-  autocmd BufEnter *.cpp :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
-  autocmd BufEnter *.h :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
-  autocmd BufEnter *.hpp :setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
+  autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
+  autocmd FileType cpp setlocal tabstop=2 softtabstop=4 shiftwidth=2 expandtab autoindent
 ]])
 
 -- for .launch files on ROS

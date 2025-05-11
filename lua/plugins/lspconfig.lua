@@ -88,6 +88,7 @@ return { -- LSP Configuration & Plugins
 			"xmlformatter",
 			"clang-format",
 			"latexindent",
+			"tex-fmt",
 			"yamlfix",
 			"cmakelang",
 			"taplo",

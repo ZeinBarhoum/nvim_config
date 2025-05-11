@@ -61,5 +61,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 vim.filetype.add({
 	extension = {
 		urdf = "xml",
+		tpp = "cpp",
+		txx = "cpp",
 	},
 })

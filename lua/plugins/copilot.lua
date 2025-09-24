@@ -15,13 +15,13 @@ return {
 				},
 			},
 			panel = {
-				enabled = true,
+				enabled = false,
 				auto_refresh = true,
 				keymap = {
-					jump_prev = "<M-[>",
-					jump_next = "<M-]>",
-					accept = "<M-CR>",
-					refresh = "gr",
+					-- jump_prev = "<M-[>",
+					-- jump_next = "<M-]>",
+					-- accept = "<M-CR>",
+					-- refresh = "gr",
 					open = "<C-CR>",
 				},
 				layout = {

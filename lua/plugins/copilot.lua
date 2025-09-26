@@ -31,6 +31,7 @@ return {
 			},
 			filetypes = {
 				["*"] = true,
+				[""] = false,
 			},
 			copilot_model = "gpt-4o-copilot",
 		})

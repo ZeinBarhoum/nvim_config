@@ -40,6 +40,7 @@ local prompts = {
 return {
 
 	"CopilotC-Nvim/CopilotChat.nvim",
+	enabled = false,
 	branch = "main",
 	-- version = "v3.3.0", -- Use a specific version to prevent breaking changes
 	dependencies = {

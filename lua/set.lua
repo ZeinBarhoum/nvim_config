@@ -31,8 +31,8 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.pumheight = 10 -- limit completion items
 vim.opt.laststatus = 3
-vim.wo.foldmethod = "expr"
-vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+-- foldmethod/foldexpr are set per-window in the treesitter FileType autocmd,
+-- so buffers without a parser keep normal folding
 vim.o.foldlevel = 99
 vim.g.transparent_background = false
 

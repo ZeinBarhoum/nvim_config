@@ -27,12 +27,7 @@ vim.keymap.set("n", "<leader>b", "<cmd>enew<CR>", { desc = "New buffer" })
 -- duplicated
 
 -- Terminal mode
-vim.keymap.set(
-	"t",
-	"<C-x>",
-	vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true),
-	{ desc = "Escape terminal mode" }
-)
+vim.keymap.set("t", "<C-x>", vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true), { desc = "Escape terminal mode" })
 
 -- Visual mode
 vim.keymap.set("v", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { desc = "Move up", expr = true })
@@ -68,17 +63,11 @@ end, { desc = "[F]ind current [W]ord" })
 vim.keymap.set("n", "<leader>fg", function()
 	builtin.live_grep({ path_display = { "truncate" } })
 end, { desc = "[F]ind by [G]rep" })
-vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
 vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "[F]ind [O]ld Files" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind existing [B]uffers" })
 
-vim.keymap.set(
-	"n",
-	"<leader>fp",
-	":lua require'telescope'.extensions.project.project{}<CR>",
-	{ desc = "[F]ind [P]roject" }
-)
+vim.keymap.set("n", "<leader>fp", ":lua require'telescope'.extensions.project.project{}<CR>", { desc = "[F]ind [P]roject" })
 
 -- Slightly advanced example of overriding default behavior and theme
 vim.keymap.set("n", "<leader>fc", builtin.current_buffer_fuzzy_find, { desc = "[F]ind in [C]urrent buffer" })
@@ -106,54 +95,52 @@ vim.keymap.set("n", "<leader>fm", function()
 	require("conform").format({ async = true, lsp_fallback = true })
 end, { desc = "[F]or[M]atting" })
 
+vim.keymap.set("n", "<leader>fd", "<Cmd>DiffFormat<CR>", { desc = "[F]ormat [D]iff" })
+
 -- lspconfig
-vim.keymap.set("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", { desc = "LSP hover" })
-vim.keymap.set("n", "<leader>ls", "<Cmd>lua vim.lsp.buf.signature_help()<CR>", { desc = "LSP signature help" })
-vim.keymap.set(
-	"n",
-	"<leader>lf",
-	'<Cmd>lua vim.diagnostic.open_float({ border = "rounded" })<CR>',
-	{ desc = "Open float diagnostics" }
-)
-vim.keymap.set(
-	"n",
-	"[d",
-	'<Cmd>lua vim.diagnostic.goto_prev({ float = { border = "rounded" } })<CR>',
-	{ desc = "Go to previous diagnostic" }
-)
-vim.keymap.set(
-	"n",
-	"]d",
-	'<Cmd>lua vim.diagnostic.goto_next({ float = { border = "rounded" } })<CR>',
-	{ desc = "Go to next diagnostic" }
-)
-vim.keymap.set("n", "<leader>q", "<Cmd>lua vim.diagnostic.setloclist()<CR>", { desc = "Clear diagnostics list" })
-vim.keymap.set("n", "<leader>wa", "<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", { desc = "Add workspace folder" })
-vim.keymap.set(
-	"n",
-	"<leader>wr",
-	"<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>",
-	{ desc = "Remove workspace folder" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>wl",
-	"<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-	{ desc = "List workspace folders" }
-)
 local map_lsp = function(keys, func, desc)
 	vim.keymap.set("n", keys, func, { desc = "LSP: " .. desc })
 end
 
-map_lsp("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-map_lsp("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-map_lsp("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-map_lsp("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-map_lsp("gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype definition")
+map_lsp("K", vim.lsp.buf.hover, "Hover")
+map_lsp("<leader>ls", vim.lsp.buf.signature_help, "[L]SP [S]ignature help")
+map_lsp("<leader>lf", function()
+	vim.diagnostic.open_float({ border = "rounded" })
+end, "[L]SP [F]loat diagnostics")
+map_lsp("[d", function()
+	vim.diagnostic.jump({ count = -1, float = { border = "rounded" } })
+end, "Previous [D]iagnostic")
+map_lsp("]d", function()
+	vim.diagnostic.jump({ count = 1, float = { border = "rounded" } })
+end, "Next [D]iagnostic")
+-- map_lsp("<leader>q", vim.diagnostic.setloclist, "[Q]uickfix diagnostics list")
+map_lsp("<leader>q", require("telescope.builtin").diagnostics, "[Q]uickfix diagnostics list")
+map_lsp("<leader>wa", vim.lsp.buf.add_workspace_folder, "LSP [W]orkspace [A]dd folder")
+map_lsp("<leader>wr", vim.lsp.buf.remove_workspace_folder, "LSP [W]orkspace [R]emove folder")
+map_lsp("<leader>wl", function()
+	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+end, "LSP [W]orkspace [L]ist folders")
+map_lsp("gd", function()
+	vim.lsp.buf.definition({ reuse_win = true })
+end, "[G]oto [D]efinition")
+map_lsp("gr", function()
+	require("telescope.builtin").lsp_references({ reuse_win = true })
+end, "[G]oto [R]eferences")
+map_lsp("gI", function()
+	vim.lsp.buf.implementation({ reuse_win = true })
+end, "[G]oto [I]mplementation")
+map_lsp("gD", function()
+	vim.lsp.buf.declaration({ reuse_win = true })
+end, "[G]oto [D]eclaration")
+map_lsp("gt", function()
+	vim.lsp.buf.type_definition({ reuse_win = true })
+end, "[G]oto [T]ype definition")
 map_lsp("<leader>fs", require("telescope.builtin").lsp_document_symbols, "[F]ind document [S]ymbols")
--- map_lsp("<leader>fws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [W]orkspace [S]ymbols")
+map_lsp("<leader>fws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [W]orkspace [S]ymbols")
 map_lsp("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 map_lsp("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+map_lsp("<leader>ci", require("telescope.builtin").lsp_incoming_calls, "[C]alls [I]ncoming")
+map_lsp("<leader>co", require("telescope.builtin").lsp_outgoing_calls, "[C]alls [O]utgoing")
 
 --toggleterm mappings
 vim.keymap.set({ "t", "n" }, "<A-i>", "<cmd>ToggleTerm direction=float<CR>", { desc = "Toggle floating term" })
@@ -193,12 +180,7 @@ vim.keymap.set({ "t", "n" }, "<A-h>", "<cmd>ToggleTerm direction=vertical<CR>", 
 vim.keymap.set("n", "<leader>/", function()
 	require("Comment.api").toggle.linewise.current()
 end, { desc = "Toggle comment" })
-vim.keymap.set(
-	"v",
-	"<leader>/",
-	"<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
-	{ desc = "Toggle comment" }
-)
+vim.keymap.set("v", "<leader>/", "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", { desc = "Toggle comment" })
 
 -- from my old config
 -- Up and down while the cursor is in the center
@@ -222,10 +204,6 @@ vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<C-g>", "<cmd>silent !tmux neww goto<CR>")
 -- love <leader> much more than ctrl ! :)
 vim.keymap.set("n", "<leader>ww", "<C-w>w")
-
--- Copilot Chat
-
-vim.keymap.set("n", "<M-o>", ":CopilotChatToggle<CR>", { silent = true, desc = "CopilotChat - Toggle" })
 
 -- bufferline
 vim.keymap.set("n", "<tab>", "<Cmd>BufferNext<Cr>", { desc = "Next Buffer", remap = false })
@@ -274,12 +252,7 @@ end)
 vim.keymap.set("n", "<leader>j", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "run operator selection" })
 vim.keymap.set("n", "<M-r>", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "run operator selection" })
 vim.keymap.set("n", "<leader>jj", ":MoltenEvaluateLine<CR>", { silent = true, desc = "evaluate line" })
-vim.keymap.set(
-	"v",
-	"<leader>j",
-	":<C-u>MoltenEvaluateVisual<CR>gv",
-	{ silent = true, desc = "evaluate visual selection" }
-)
+vim.keymap.set("v", "<leader>j", ":<C-u>MoltenEvaluateVisual<CR>gv", { silent = true, desc = "evaluate visual selection" })
 vim.keymap.set("v", "<M-r>", ":<C-u>MoltenEvaluateVisual<CR>gv", { silent = true, desc = "evaluate visual selection" })
 vim.keymap.set("n", "<leader>jc", ":MoltenReevaluateCell<CR>", { silent = true, desc = "re-evaluate cell" })
 vim.keymap.set("n", "<leader>jd", ":MoltenDelete<CR>", { noremap = true })
@@ -297,7 +270,3 @@ vim.keymap.set("n", "<leader>vs", "<cmd>VenvSelect<cr>", { desc = "Select virtua
 
 -- markdown preview
 vim.keymap.set("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Markdown preview" })
-
--- Avatae
-vim.keymap.set({ "n", "i" }, "<M-a>", "<cmd>AvanteToggle<cr>", { desc = "Avante Toggle" })
-vim.keymap.set({ "n", "i" }, "<M-e>", "<cmd>AvanteEdit<cr>", { desc = "Avante Toggle" })

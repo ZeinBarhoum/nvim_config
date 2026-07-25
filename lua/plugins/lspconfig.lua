@@ -76,6 +76,7 @@ return { -- LSP Configuration & Plugins
 					},
 				},
 			},
+			bashls = {},
 		}
 
 		require("mason").setup()
@@ -94,6 +95,8 @@ return { -- LSP Configuration & Plugins
 			"taplo",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+		servers.autotools_ls = {}
 
 		require("mason-lspconfig").setup({
 			handlers = {

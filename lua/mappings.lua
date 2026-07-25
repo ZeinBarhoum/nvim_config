@@ -16,8 +16,9 @@ vim.keymap.set("i", "<C-k>", "<Up>", { desc = "Move up" })
 -- duplicated
 vim.keymap.set("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
 vim.keymap.set("n", "<C-c>", "<cmd>%y+<CR>", { desc = "Copy whole file" })
-vim.keymap.set("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "Toggle line number" })
-vim.keymap.set("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "Toggle relative number" })
+-- under the <leader>t toggle group: <leader>n is nvim-tree focus, <leader>rn is LSP rename
+vim.keymap.set("n", "<leader>tn", "<cmd>set nu!<CR>", { desc = "Toggle line number" })
+vim.keymap.set("n", "<leader>tr", "<cmd>set rnu!<CR>", { desc = "Toggle relative number" })
 vim.keymap.set("n", "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { desc = "Move down", expr = true })
 vim.keymap.set("n", "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { desc = "Move up", expr = true })
 vim.keymap.set("n", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { desc = "Move up", expr = true })
@@ -43,10 +44,10 @@ vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy re
 -- kickstart mapping
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+-- NOTE: <C-h/j/k/l> are deliberately NOT mapped here. vim-tmux-navigator owns them
+-- (see lua/plugins/tmux-navigator.lua) and falls back to plain window navigation when
+-- there is no tmux pane in that direction. Mapping them here would silently win, since
+-- this file loads after lazy.nvim registers its lazy-loading keys.
 
 -- telescope
 -- See `:help telescope.builtin`
@@ -102,30 +103,24 @@ local map_lsp = function(keys, func, desc)
 	vim.keymap.set("n", keys, func, { desc = "LSP: " .. desc })
 end
 
-map_lsp("K", vim.lsp.buf.hover, "Hover")
+-- NOTE: Neovim 0.11+ creates these buffer-locally on LspAttach, so they are not
+-- redefined here: K (hover), gO (document symbols), grn (rename), gra (code action),
+-- grr (references), gri (implementation), grt (type definition), <C-w>d (line
+-- diagnostics), and [d / ]d (diagnostic jump). See :h lsp-defaults.
 map_lsp("<leader>ls", vim.lsp.buf.signature_help, "[L]SP [S]ignature help")
 map_lsp("<leader>lf", function()
 	vim.diagnostic.open_float({ border = "rounded" })
 end, "[L]SP [F]loat diagnostics")
-map_lsp("[d", function()
-	vim.diagnostic.jump({ count = -1, float = { border = "rounded" } })
-end, "Previous [D]iagnostic")
-map_lsp("]d", function()
-	vim.diagnostic.jump({ count = 1, float = { border = "rounded" } })
-end, "Next [D]iagnostic")
 -- map_lsp("<leader>q", vim.diagnostic.setloclist, "[Q]uickfix diagnostics list")
 map_lsp("<leader>q", require("telescope.builtin").diagnostics, "[Q]uickfix diagnostics list")
-map_lsp("<leader>wa", vim.lsp.buf.add_workspace_folder, "LSP [W]orkspace [A]dd folder")
-map_lsp("<leader>wr", vim.lsp.buf.remove_workspace_folder, "LSP [W]orkspace [R]emove folder")
-map_lsp("<leader>wl", function()
-	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-end, "LSP [W]orkspace [L]ist folders")
 map_lsp("gd", function()
 	vim.lsp.buf.definition({ reuse_win = true })
 end, "[G]oto [D]efinition")
-map_lsp("gr", function()
+-- moved off `gr`: it is a prefix of the built-in grn/gra/grr/gri/grt, so every press
+-- stalled for 'timeoutlen'. Built-in `grr` still gives plain references.
+map_lsp("<leader>fR", function()
 	require("telescope.builtin").lsp_references({ reuse_win = true })
-end, "[G]oto [R]eferences")
+end, "[F]ind [R]eferences")
 map_lsp("gI", function()
 	vim.lsp.buf.implementation({ reuse_win = true })
 end, "[G]oto [I]mplementation")
@@ -136,7 +131,8 @@ map_lsp("gt", function()
 	vim.lsp.buf.type_definition({ reuse_win = true })
 end, "[G]oto [T]ype definition")
 map_lsp("<leader>fs", require("telescope.builtin").lsp_document_symbols, "[F]ind document [S]ymbols")
-map_lsp("<leader>fws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [W]orkspace [S]ymbols")
+-- <leader>fW, not <leader>fws: the latter made <leader>fw wait out 'timeoutlen'
+map_lsp("<leader>fW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[F]ind [W]orkspace symbols")
 map_lsp("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 map_lsp("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 map_lsp("<leader>ci", require("telescope.builtin").lsp_incoming_calls, "[C]alls [I]ncoming")
@@ -176,11 +172,10 @@ vim.keymap.set({ "t", "n" }, "<A-h>", "<cmd>ToggleTerm direction=vertical<CR>", 
 -- 	require("nvterm.terminal").new("vertical")
 -- end, { desc = "New vertical term" })
 
--- Comment
-vim.keymap.set("n", "<leader>/", function()
-	require("Comment.api").toggle.linewise.current()
-end, { desc = "Toggle comment" })
-vim.keymap.set("v", "<leader>/", "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", { desc = "Toggle comment" })
+-- Comment: Comment.nvim removed, these forward to Neovim's built-in commenting.
+-- `remap = true` is required because gcc/gc are themselves mappings.
+vim.keymap.set("n", "<leader>/", "gcc", { remap = true, desc = "Toggle comment" })
+vim.keymap.set("x", "<leader>/", "gc", { remap = true, desc = "Toggle comment" })
 
 -- from my old config
 -- Up and down while the cursor is in the center
@@ -215,10 +210,13 @@ vim.keymap.set("n", "<C-x>", "<Cmd>BufferCloseAllButCurrent<Cr>", { desc = "Clos
 vim.keymap.set("x", "<leader>re", ":Refactor extract ")
 vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
 vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
-vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
-vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
-vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
-vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
+-- These take no argument, so execute immediately instead of parking at the cmdline.
+-- The three above DO take a name, so they intentionally leave the cmdline open.
+vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var<CR>", { desc = "Inline variable" })
+vim.keymap.set("n", "<leader>rI", ":Refactor inline_func<CR>", { desc = "Inline function" })
+vim.keymap.set("n", "<leader>rb", ":Refactor extract_block<CR>", { desc = "Extract block" })
+-- <leader>rB, not <leader>rbf: the latter made <leader>rb wait out 'timeoutlen'
+vim.keymap.set("n", "<leader>rB", ":Refactor extract_block_to_file<CR>", { desc = "Extract block to file" })
 
 -- harpoon
 vim.keymap.set("n", "<leader>ha", function()
@@ -237,33 +235,19 @@ end, { desc = "Harpoon List" })
 for i = 1, 9 do
 	vim.keymap.set("n", "<leader>h" .. i, function()
 		require("harpoon"):list():select(i)
-	end)
+	end, { desc = "Harpoon Select " .. i })
 end
 
 -- Toggle previous & next buffers stored within require('Harpoon') list
 vim.keymap.set("n", "<leader>hp", function()
 	require("harpoon"):list():prev()
-end)
+end, { desc = "Harpoon Previous" })
 vim.keymap.set("n", "<leader>hn", function()
 	require("harpoon"):list():next()
-end)
+end, { desc = "Harpoon Next" })
 
--- molten
-vim.keymap.set("n", "<leader>j", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "run operator selection" })
-vim.keymap.set("n", "<M-r>", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "run operator selection" })
-vim.keymap.set("n", "<leader>jj", ":MoltenEvaluateLine<CR>", { silent = true, desc = "evaluate line" })
-vim.keymap.set("v", "<leader>j", ":<C-u>MoltenEvaluateVisual<CR>gv", { silent = true, desc = "evaluate visual selection" })
-vim.keymap.set("v", "<M-r>", ":<C-u>MoltenEvaluateVisual<CR>gv", { silent = true, desc = "evaluate visual selection" })
-vim.keymap.set("n", "<leader>jc", ":MoltenReevaluateCell<CR>", { silent = true, desc = "re-evaluate cell" })
-vim.keymap.set("n", "<leader>jd", ":MoltenDelete<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>jo", ":MoltenShowOutput<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>jh", ":MoltenHideOutput<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>jr", ":MoltenRestart<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>ji", ":MoltenInterrupt<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>js", ":MoltenSave<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>jl", ":MoltenLoad<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>jq", ":noautocmd MoltenEnterOutput<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>jx", ":MoltenOpenInBrowser<CR>", { desc = "open output in browser", silent = true })
+-- molten: mappings removed, the plugin is not installed and every :Molten* command
+-- errored. To restore, add `benlubas/molten-nvim` to lua/plugins/ and re-add these.
 
 -- venv-selector
 vim.keymap.set("n", "<leader>vs", "<cmd>VenvSelect<cr>", { desc = "Select virtual environment" })

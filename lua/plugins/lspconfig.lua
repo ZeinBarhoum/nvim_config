@@ -102,6 +102,10 @@ return { -- LSP Configuration & Plugins
 
 		require("mason-tool-installer").setup({
 			ensure_installed = {
+				-- NOTE: do NOT add "tree-sitter-cli" here. Mason ships a prebuilt binary
+				-- linked against GLIBC_2.39; Ubuntu 22.04 has 2.35, so it fails to run
+				-- and, because mason/bin precedes /usr/bin, it shadows a working copy.
+				-- Install it with `cargo install tree-sitter-cli` instead.
 				"stylua",
 				"black",
 				"docformatter",

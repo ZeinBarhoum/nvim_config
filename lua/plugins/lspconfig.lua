@@ -111,7 +111,8 @@ return { -- LSP Configuration & Plugins
 				"docformatter",
 				"mdformat",
 				"xmlformatter",
-				"clang-format",
+				-- Pinned: newer clang-format releases reformat existing code.
+				{ "clang-format", version = "20.1.3" },
 				"latexindent",
 				"tex-fmt",
 				"yamlfix",

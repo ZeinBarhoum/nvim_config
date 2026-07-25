@@ -92,7 +92,7 @@ end, { desc = "[F]ind [A]ll files" })
 
 -- conform
 vim.keymap.set("n", "<leader>fm", function()
-	require("conform").format({ async = true, lsp_fallback = true })
+	require("conform").format({ async = true, lsp_format = "fallback" })
 end, { desc = "[F]or[M]atting" })
 
 vim.keymap.set("n", "<leader>fd", "<Cmd>DiffFormat<CR>", { desc = "[F]ormat [D]iff" })

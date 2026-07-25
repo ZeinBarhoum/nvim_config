@@ -56,7 +56,7 @@ return {
 					-- replaces the deprecated toggle_deleted(); shows deleted lines inline
 					-- for the hunk under the cursor rather than toggling them buffer-wide
 					map("n", "<leader>tD", gitsigns.preview_hunk_inline, { desc = "Show [D]eleted lines inline" })
-				map("n", "<leader>tB", gitsigns.blame)
+					map("n", "<leader>tB", gitsigns.blame, { desc = "Open full [B]lame view" })
 			end,
 		},
 	},

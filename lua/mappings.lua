@@ -33,16 +33,16 @@ vim.keymap.set("t", "<C-x>", vim.api.nvim_replace_termcodes("<C-\\><C-N>", true,
 -- Visual mode
 vim.keymap.set("v", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { desc = "Move up", expr = true })
 vim.keymap.set("v", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { desc = "Move down", expr = true })
-vim.keymap.set("v", "<", "<gv", { desc = "Indent line" })
-vim.keymap.set("v", ">", ">gv", { desc = "Indent line" })
+vim.keymap.set("v", "<", "<gv", { desc = "Outdent selection (keep selected)" })
+vim.keymap.set("v", ">", ">gv", { desc = "Indent selection (keep selected)" })
 
 -- Visual-line mode
 vim.keymap.set("x", "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { desc = "Move down", expr = true })
 vim.keymap.set("x", "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { desc = "Move up", expr = true })
-vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text", silent = true })
+vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Paste over selection (keep yanked text)", silent = true })
 
 -- kickstart mapping
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- NOTE: <C-h/j/k/l> are deliberately NOT mapped here. vim-tmux-navigator owns them
 -- (see lua/plugins/tmux-navigator.lua) and falls back to plain window navigation when
@@ -57,7 +57,7 @@ vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" }
 vim.keymap.set("n", "<leader>ff", function()
 	builtin.find_files({ path_display = { "truncate" } })
 end, { desc = "[F]ind [F]iles" })
-vim.keymap.set("n", "<leader>ft", builtin.colorscheme, { desc = "[F]ind select [T]elescope" })
+vim.keymap.set("n", "<leader>ft", builtin.colorscheme, { desc = "[F]ind [T]heme (colorscheme)" })
 vim.keymap.set("n", "<leader>fw", function()
 	builtin.grep_string({ path_display = { "truncate" } })
 end, { desc = "[F]ind current [W]ord" })
@@ -94,7 +94,7 @@ end, { desc = "[F]ind [A]ll files" })
 -- conform
 vim.keymap.set("n", "<leader>fm", function()
 	require("conform").format({ async = true, lsp_format = "fallback" })
-end, { desc = "[F]or[M]atting" })
+end, { desc = "[F]or[M]at buffer" })
 
 vim.keymap.set("n", "<leader>fd", "<Cmd>DiffFormat<CR>", { desc = "[F]ormat [D]iff" })
 
@@ -107,12 +107,13 @@ end
 -- redefined here: K (hover), gO (document symbols), grn (rename), gra (code action),
 -- grr (references), gri (implementation), grt (type definition), <C-w>d (line
 -- diagnostics), and [d / ]d (diagnostic jump). See :h lsp-defaults.
-map_lsp("<leader>ls", vim.lsp.buf.signature_help, "[L]SP [S]ignature help")
+-- NOTE: map_lsp already prefixes "LSP: ", so descriptions here should not repeat it.
+map_lsp("<leader>ls", vim.lsp.buf.signature_help, "[S]ignature help")
 map_lsp("<leader>lf", function()
 	vim.diagnostic.open_float({ border = "rounded" })
-end, "[L]SP [F]loat diagnostics")
+end, "[F]loat diagnostic under cursor")
 -- map_lsp("<leader>q", vim.diagnostic.setloclist, "[Q]uickfix diagnostics list")
-map_lsp("<leader>q", require("telescope.builtin").diagnostics, "[Q]uickfix diagnostics list")
+map_lsp("<leader>q", require("telescope.builtin").diagnostics, "[Q]uickfix list of all diagnostics")
 map_lsp("gd", function()
 	vim.lsp.buf.definition({ reuse_win = true })
 end, "[G]oto [D]efinition")
@@ -139,9 +140,12 @@ map_lsp("<leader>ci", require("telescope.builtin").lsp_incoming_calls, "[C]alls 
 map_lsp("<leader>co", require("telescope.builtin").lsp_outgoing_calls, "[C]alls [O]utgoing")
 
 --toggleterm mappings
-vim.keymap.set({ "t", "n" }, "<A-i>", "<cmd>ToggleTerm direction=float<CR>", { desc = "Toggle floating term" })
-vim.keymap.set({ "t", "n" }, "<A-v>", "<cmd>ToggleTerm direction=horizontal<CR>", { desc = "Toggle floating term" })
-vim.keymap.set({ "t", "n" }, "<A-h>", "<cmd>ToggleTerm direction=vertical<CR>", { desc = "Toggle floating term" })
+-- NOTE: the descriptions below match actual behaviour, which is the opposite of what
+-- the letters suggest: <A-v> opens a horizontal (bottom) split, <A-h> a vertical (side)
+-- one. Swap the two directions here if you'd rather the letters lined up.
+vim.keymap.set({ "t", "n" }, "<A-i>", "<cmd>ToggleTerm direction=float<CR>", { desc = "Toggle floating terminal" })
+vim.keymap.set({ "t", "n" }, "<A-v>", "<cmd>ToggleTerm direction=horizontal<CR>", { desc = "Toggle horizontal (bottom) terminal" })
+vim.keymap.set({ "t", "n" }, "<A-h>", "<cmd>ToggleTerm direction=vertical<CR>", { desc = "Toggle vertical (side) terminal" })
 
 -- nvterm terminal
 -- vim.keymap.set("t", "<A-i>", function()
@@ -179,26 +183,31 @@ vim.keymap.set("x", "<leader>/", "gc", { remap = true, desc = "Toggle comment" }
 
 -- from my old config
 -- Up and down while the cursor is in the center
-vim.keymap.set("n", "<C-D>", "<C-D>zz", { silent = true, noremap = true })
-vim.keymap.set("n", "<C-U>", "<C-U>zz", { silent = true, noremap = true })
+vim.keymap.set("n", "<C-D>", "<C-D>zz", { silent = true, noremap = true, desc = "Half page down (centered)" })
+vim.keymap.set("n", "<C-U>", "<C-U>zz", { silent = true, noremap = true, desc = "Half page up (centered)" })
 
 -- ThePrimeagen remaps
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+vim.keymap.set("n", "J", "mzJ`z", { desc = "Join line below (keep cursor)" })
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next search match (centered)" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search match (centered)" })
 
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 -- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 -- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 -- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set(
+	"n",
+	"<leader>s",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "[S]ubstitute word under cursor (buffer-wide)" }
+)
 
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<C-g>", "<cmd>silent !tmux neww goto<CR>")
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { desc = "tmux: sessionizer (new window)" })
+vim.keymap.set("n", "<C-g>", "<cmd>silent !tmux neww goto<CR>", { desc = "tmux: goto (new window)" })
 -- love <leader> much more than ctrl ! :)
-vim.keymap.set("n", "<leader>ww", "<C-w>w")
+vim.keymap.set("n", "<leader>ww", "<C-w>w", { desc = "Cycle to next [W]indow" })
 
 -- bufferline
 vim.keymap.set("n", "<tab>", "<Cmd>BufferNext<Cr>", { desc = "Next Buffer", remap = false })
@@ -207,9 +216,11 @@ vim.keymap.set("n", "<leader>x", "<Cmd>BufferClose<Cr>", { desc = "Close Buffer"
 vim.keymap.set("n", "<C-x>", "<Cmd>BufferCloseAllButCurrent<Cr>", { desc = "Close All But Current", remap = false })
 
 -- refactoring
-vim.keymap.set("x", "<leader>re", ":Refactor extract ")
-vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
-vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
+-- These leave the cmdline open on purpose: you type the new name, and :Refactor
+-- supports 'inccommand' live preview while you do.
+vim.keymap.set("x", "<leader>re", ":Refactor extract ", { desc = "[E]xtract function (type a name)" })
+vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ", { desc = "Extract function to [F]ile (type a name)" })
+vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ", { desc = "Extract [V]ariable (type a name)" })
 -- These take no argument, so execute immediately instead of parking at the cmdline.
 -- The three above DO take a name, so they intentionally leave the cmdline open.
 vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var<CR>", { desc = "Inline variable" })

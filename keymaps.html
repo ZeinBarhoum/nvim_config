@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neovim Keymap Reference</title>
+<style>
+  /* minimal reset, matching what the hosted version gets for free */
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+  img, svg { max-width: 100%; }
+</style>
+</head>
+<body>
+<style>
+  :root {
+    --paper: #e9edf1;
+    --surface: #ffffff;
+    --surface-2: #f4f7f9;
+    --ink: #0f151c;
+    --ink-2: #33414f;
+    --muted: #5d6d7d;
+    --line: #d2dae1;
+    --line-soft: #e2e8ee;
+    --accent: #1b6a86;
+    --accent-soft: #d8e9ef;
+    --new: #8a5a00;
+    --new-bg: #fdf0d5;
+
+    --m-normal: #2f5fbe;
+    --m-insert: #1f7a4d;
+    --m-visual: #7b4bc4;
+    --m-op: #a5620f;
+    --m-term: #b03e2f;
+    --m-any: #5d6d7d;
+
+    --keycap-bg: #ffffff;
+    --keycap-edge: #c3ccd5;
+    --keycap-shadow: rgba(15, 21, 28, 0.16);
+
+    --f-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --f-mono: ui-monospace, "SFMono-Regular", "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0c1116;
+      --surface: #141b22;
+      --surface-2: #1a232c;
+      --ink: #e4ebf1;
+      --ink-2: #b7c4d0;
+      --muted: #8496a5;
+      --line: #26313c;
+      --line-soft: #1f2932;
+      --accent: #5cb6d4;
+      --accent-soft: #16323d;
+      --new: #e0b25f;
+      --new-bg: #33280f;
+
+      --m-normal: #7aa2f7;
+      --m-insert: #7ec699;
+      --m-visual: #bb9af7;
+      --m-op: #e0af68;
+      --m-term: #f08d7a;
+      --m-any: #8496a5;
+
+      --keycap-bg: #1e2831;
+      --keycap-edge: #333f4b;
+      --keycap-shadow: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #0c1116;
+    --surface: #141b22;
+    --surface-2: #1a232c;
+    --ink: #e4ebf1;
+    --ink-2: #b7c4d0;
+    --muted: #8496a5;
+    --line: #26313c;
+    --line-soft: #1f2932;
+    --accent: #5cb6d4;
+    --accent-soft: #16323d;
+    --new: #e0b25f;
+    --new-bg: #33280f;
+    --m-normal: #7aa2f7;
+    --m-insert: #7ec699;
+    --m-visual: #bb9af7;
+    --m-op: #e0af68;
+    --m-term: #f08d7a;
+    --m-any: #8496a5;
+    --keycap-bg: #1e2831;
+    --keycap-edge: #333f4b;
+    --keycap-shadow: rgba(0, 0, 0, 0.5);
+  }
+
+  :root[data-theme="light"] {
+    --paper: #e9edf1;
+    --surface: #ffffff;
+    --surface-2: #f4f7f9;
+    --ink: #0f151c;
+    --ink-2: #33414f;
+    --muted: #5d6d7d;
+    --line: #d2dae1;
+    --line-soft: #e2e8ee;
+    --accent: #1b6a86;
+    --accent-soft: #d8e9ef;
+    --new: #8a5a00;
+    --new-bg: #fdf0d5;
+    --m-normal: #2f5fbe;
+    --m-insert: #1f7a4d;
+    --m-visual: #7b4bc4;
+    --m-op: #a5620f;
+    --m-term: #b03e2f;
+    --m-any: #5d6d7d;
+    --keycap-bg: #ffffff;
+    --keycap-edge: #c3ccd5;
+    --keycap-shadow: rgba(15, 21, 28, 0.16);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 20px 96px;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    padding: 52px 0 28px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    text-wrap: balance;
+  }
+  .standfirst {
+    margin: 16px 0 0;
+    max-width: 62ch;
+    color: var(--ink-2);
+    font-size: 1.02rem;
+  }
+  .standfirst code { font-size: 0.92em; }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 34px;
+    margin-top: 26px;
+  }
+  .fact { display: flex; flex-direction: column; gap: 3px; }
+  .fact dt {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+  .fact dd {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.28rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- control bar ---------- */
+  .controls {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--paper);
+    padding: 14px 0 13px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  .search {
+    flex: 1 1 240px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search input {
+    width: 100%;
+    font-family: var(--f-mono);
+    font-size: 14px;
+    padding: 10px 12px 10px 34px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .search input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+  }
+  .search::before {
+    content: "/";
+    position: absolute;
+    left: 13px;
+    font-family: var(--f-mono);
+    font-weight: 700;
+    color: var(--accent);
+    pointer-events: none;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .chip {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 6px 9px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .chip[aria-pressed="true"] {
+    border-color: currentColor;
+    background: var(--surface-2);
+  }
+  .chip .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: currentColor;
+    flex: none;
+  }
+  .chip.n { color: var(--m-normal); }
+  .chip.i { color: var(--m-insert); }
+  .chip.v { color: var(--m-visual); }
+  .chip.o { color: var(--m-op); }
+  .chip.t { color: var(--m-term); }
+  .chip.new { color: var(--new); }
+
+  .count {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* ---------- sections ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 18px;
+    margin-top: 26px;
+    align-items: start;
+  }
+
+  section.card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  section.card > h2 {
+    margin: 0;
+    padding: 13px 15px 11px;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--surface-2);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  section.card > h2 .src {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  ul.rows { list-style: none; margin: 0; padding: 4px 0; }
+
+  li.row {
+    display: grid;
+    grid-template-columns: minmax(84px, auto) 1fr;
+    gap: 4px 12px;
+    align-items: baseline;
+    padding: 6px 15px;
+    border-left: 3px solid transparent;
+  }
+  li.row + li.row { border-top: 1px solid var(--line-soft); }
+  li.row.n { border-left-color: var(--m-normal); }
+  li.row.i { border-left-color: var(--m-insert); }
+  li.row.v { border-left-color: var(--m-visual); }
+  li.row.o { border-left-color: var(--m-op); }
+  li.row.t { border-left-color: var(--m-term); }
+  li.row.any { border-left-color: var(--m-any); }
+
+  .keys { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; }
+
+  kbd {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 4px 6px;
+    color: var(--ink);
+    background: var(--keycap-bg);
+    border: 1px solid var(--keycap-edge);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 var(--keycap-shadow);
+    white-space: nowrap;
+  }
+  kbd.lead { color: var(--accent); }
+  .sep { color: var(--muted); font-size: 11px; padding: 0 1px; }
+
+  .act { color: var(--ink-2); font-size: 0.9rem; }
+  .act .hint {
+    display: block;
+    color: var(--muted);
+    font-size: 0.79rem;
+    margin-top: 1px;
+  }
+  .act code {
+    font-family: var(--f-mono);
+    font-size: 0.86em;
+    background: var(--surface-2);
+    padding: 0 3px;
+    border-radius: 2px;
+  }
+
+  .tag-new {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--new);
+    background: var(--new-bg);
+    border-radius: 2px;
+    padding: 2px 4px;
+    margin-left: 6px;
+    vertical-align: 1px;
+  }
+
+  /* ---------- notes ---------- */
+  .note {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 16px 18px;
+  }
+  .note h3 {
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .note p { margin: 0 0 8px; color: var(--ink-2); max-width: 74ch; font-size: 0.92rem; }
+  .note p:last-child { margin-bottom: 0; }
+  .note code {
+    font-family: var(--f-mono);
+    font-size: 0.86em;
+    background: var(--surface-2);
+    padding: 1px 4px;
+    border-radius: 2px;
+  }
+
+  .divider {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0 -4px;
+  }
+  .divider span {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .divider::after {
+    content: "";
+    height: 1px;
+    background: var(--line);
+    flex: 1;
+  }
+
+  .empty {
+    grid-column: 1 / -1;
+    padding: 40px 0;
+    text-align: center;
+    color: var(--muted);
+    font-family: var(--f-mono);
+    font-size: 13px;
+  }
+  .empty[hidden] { display: none; }
+
+  footer {
+    margin-top: 46px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+  footer code { font-family: var(--f-mono); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 560px) {
+    li.row { grid-template-columns: 1fr; }
+    .masthead { padding-top: 34px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Personal reference &middot; NVIM v0.12.4</p>
+    <h1>Keymap Reference</h1>
+    <p class="standfirst">
+      Every mapping in your config, grouped by what you're trying to do rather than by which
+      plugin provides it. Leader is <kbd class="lead">Space</kbd>. The colour on the left of each
+      row is the mode it works in.
+    </p>
+    <dl class="facts">
+      <div class="fact"><dt>Mappings</dt><dd>170+</dd></div>
+      <div class="fact"><dt>Plugins</dt><dd>47</dd></div>
+      <div class="fact"><dt>Added recently</dt><dd>10</dd></div>
+      <div class="fact"><dt>Leader</dt><dd>Space</dd></div>
+    </dl>
+  </header>
+
+  <div class="controls">
+    <label class="search">
+      <span class="sr-only" hidden>Filter mappings</span>
+      <input id="q" type="search" placeholder="filter by key or action…" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="legend" id="legend">
+      <button class="chip n" data-mode="n" aria-pressed="false"><span class="dot"></span>normal</button>
+      <button class="chip i" data-mode="i" aria-pressed="false"><span class="dot"></span>insert</button>
+      <button class="chip v" data-mode="v" aria-pressed="false"><span class="dot"></span>visual</button>
+      <button class="chip o" data-mode="o" aria-pressed="false"><span class="dot"></span>operator</button>
+      <button class="chip t" data-mode="t" aria-pressed="false"><span class="dot"></span>terminal</button>
+      <button class="chip new" data-mode="new" aria-pressed="false"><span class="dot"></span>new</button>
+    </div>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <div class="divider"><span>Orientation</span></div>
+
+    <div class="note">
+      <h3>The leader groups</h3>
+      <p>
+        Almost everything hangs off <kbd class="lead">Space</kbd>. Learn these ten letters and the
+        rest follows: <code>f</code> find, <code>l</code> LSP, <code>c</code> code, <code>r</code>
+        refactor/rename, <code>g</code> git hunk, <code>h</code> harpoon, <code>d</code> debug,
+        <code>t</code> toggle, <code>w</code> window, <code>X</code> Trouble, <code>a</code> AI,
+        <code>p</code> sessions.
+      </p>
+      <p>
+        Press <kbd class="lead">Space</kbd> and pause — which-key shows what's available, so you
+        never have to recall a full sequence cold.
+      </p>
+    </div>
+
+    <div class="divider"><span>Finding things</span></div>
+
+    <section class="card">
+      <h2>Find <span class="src">telescope</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>f</kbd></span><span class="act">Find files</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>a</kbd></span><span class="act">Find <em>all</em> files<span class="hint">includes hidden and ignored</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>g</kbd></span><span class="act">Grep across the project</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>w</kbd></span><span class="act">Grep the word under cursor</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>/</kbd></span><span class="act">Grep only open files</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>c</kbd></span><span class="act">Fuzzy find in current buffer</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>b</kbd></span><span class="act">Open buffers</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>o</kbd></span><span class="act">Recently opened files</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>r</kbd></span><span class="act">Resume last picker</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>p</kbd></span><span class="act">Switch project</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>h</kbd></span><span class="act">Search help tags</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>k</kbd></span><span class="act">Search keymaps<span class="hint">the in-editor version of this page</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>t</kbd></span><span class="act">Preview colorschemes</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Search &amp; replace <span class="src">grug-far &middot; builtin</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>s</kbd></span><span class="act">Substitute word under cursor<span class="hint">this buffer only — lowercase</span></span></li>
+        <li class="row v"><span class="keys"><kbd class="lead">Spc</kbd><kbd>S</kbd></span><span class="act">Search &amp; replace across project<span class="hint">uppercase = whole project; visual mode seeds the selection</span><span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd>/</kbd></span><span class="act">Search forward<span class="hint">flash adds jump labels while you type</span></span></li>
+        <li class="row n"><span class="keys"><kbd>n</kbd><span class="sep">/</span><kbd>N</kbd></span><span class="act">Next / previous match<span class="hint">recentred automatically</span></span></li>
+        <li class="row n"><span class="keys"><kbd>Esc</kbd></span><span class="act">Clear search highlight</span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>Code intelligence</span></div>
+
+    <section class="card">
+      <h2>Go to <span class="src">LSP</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>d</kbd></span><span class="act">Definition</span></li>
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>D</kbd></span><span class="act">Declaration</span></li>
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>I</kbd></span><span class="act">Implementation</span></li>
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>t</kbd></span><span class="act">Type definition</span></li>
+        <li class="row n"><span class="keys"><kbd>K</kbd></span><span class="act">Hover documentation</span></li>
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>O</kbd></span><span class="act">Document symbols<span class="hint">builtin outline</span></span></li>
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>r</kbd><kbd>r</kbd></span><span class="act">References <span class="hint">builtin quickfix version</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>R</kbd></span><span class="act">References <span class="hint">telescope version</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>s</kbd></span><span class="act">Document symbols <span class="hint">telescope</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>W</kbd></span><span class="act">Workspace symbols</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>c</kbd><kbd>i</kbd></span><span class="act">Incoming calls</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>c</kbd><kbd>o</kbd></span><span class="act">Outgoing calls</span></li>
+        <li class="row n"><span class="keys"><kbd>;</kbd></span><span class="act">Pick symbol in breadcrumb bar<span class="hint">dropbar</span></span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Change code <span class="src">LSP &middot; conform</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>r</kbd><kbd>n</kbd></span><span class="act">Rename symbol<span class="hint">same as builtin <code>grn</code></span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>c</kbd><kbd>a</kbd></span><span class="act">Code action<span class="hint">same as builtin <code>gra</code></span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>c</kbd><kbd>R</kbd></span><span class="act">Rename the <em>file</em><span class="hint">updates imports across the project</span><span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>m</kbd></span><span class="act">Format buffer</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>f</kbd><kbd>d</kbd></span><span class="act">Format only changed lines</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>l</kbd><kbd>s</kbd></span><span class="act">Signature help</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>l</kbd><kbd>l</kbd></span><span class="act">Lint now<span class="hint">also runs on save automatically</span><span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>r</kbd><kbd>x</kbd></span><span class="act">Run code lens</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Diagnostics &amp; lists <span class="src">trouble</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>]</kbd><kbd>d</kbd><span class="sep">/</span><kbd>[</kbd><kbd>d</kbd></span><span class="act">Next / previous diagnostic</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>l</kbd><kbd>f</kbd></span><span class="act">Float the diagnostic under cursor</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>q</kbd></span><span class="act">All diagnostics<span class="hint">now opens Trouble, live-updating</span><span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>X</kbd><kbd>x</kbd></span><span class="act">Diagnostics — workspace<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>X</kbd><kbd>X</kbd></span><span class="act">Diagnostics — this buffer<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>X</kbd><kbd>s</kbd></span><span class="act">Symbol outline<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>X</kbd><kbd>l</kbd></span><span class="act">Definitions &amp; references panel<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>X</kbd><kbd>t</kbd></span><span class="act">TODO comments<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>X</kbd><kbd>Q</kbd></span><span class="act">Quickfix list<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd>]</kbd><kbd>q</kbd><span class="sep">/</span><kbd>[</kbd><kbd>q</kbd></span><span class="act">Next / previous quickfix item</span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>Selecting &amp; jumping by syntax</span></div>
+
+    <div class="note">
+      <h3>How text objects read</h3>
+      <p>
+        Every one of these follows an operator. <kbd>a</kbd> means <em>around</em> (includes the
+        delimiters), <kbd>i</kbd> means <em>inside</em>. So <kbd>d</kbd><kbd>a</kbd><kbd>f</kbd>
+        deletes a whole function, <kbd>c</kbd><kbd>i</kbd><kbd>f</kbd> clears just its body, and
+        <kbd>v</kbd><kbd>a</kbd><kbd>f</kbd> selects one.
+      </p>
+      <p>
+        Lookahead is on: if the cursor isn't inside one yet, it jumps forward to the next match.
+      </p>
+    </div>
+
+    <section class="card">
+      <h2>Text objects <span class="src">treesitter <span class="tag-new">new</span></span></h2>
+      <ul class="rows">
+        <li class="row o"><span class="keys"><kbd>a</kbd><kbd>f</kbd><span class="sep">/</span><kbd>i</kbd><kbd>f</kbd></span><span class="act">Function</span></li>
+        <li class="row o"><span class="keys"><kbd>a</kbd><kbd>c</kbd><span class="sep">/</span><kbd>i</kbd><kbd>c</kbd></span><span class="act">Class</span></li>
+        <li class="row o"><span class="keys"><kbd>a</kbd><kbd>a</kbd><span class="sep">/</span><kbd>i</kbd><kbd>a</kbd></span><span class="act">Parameter<span class="hint"><code>a</code> takes the comma too</span></span></li>
+        <li class="row o"><span class="keys"><kbd>a</kbd><kbd>o</kbd><span class="sep">/</span><kbd>i</kbd><kbd>o</kbd></span><span class="act">Loop</span></li>
+        <li class="row o"><span class="keys"><kbd>a</kbd><kbd>=</kbd><span class="sep">/</span><kbd>i</kbd><kbd>=</kbd></span><span class="act">Assignment<span class="hint"><code>ci=</code> replaces the right-hand side</span></span></li>
+        <li class="row o"><span class="keys"><kbd>a</kbd><kbd>n</kbd><span class="sep">/</span><kbd>i</kbd><kbd>n</kbd></span><span class="act">Parent / child syntax node</span></li>
+        <li class="row o"><span class="keys"><kbd>a</kbd><kbd>i</kbd><span class="sep">/</span><kbd>i</kbd><kbd>i</kbd></span><span class="act">Indent block<span class="hint">vim-indent-object</span></span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Jump by structure <span class="src">treesitter <span class="tag-new">new</span></span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>]</kbd><kbd>f</kbd><span class="sep">/</span><kbd>[</kbd><kbd>f</kbd></span><span class="act">Next / previous function start</span></li>
+        <li class="row n"><span class="keys"><kbd>]</kbd><kbd>F</kbd><span class="sep">/</span><kbd>[</kbd><kbd>F</kbd></span><span class="act">Next / previous function end</span></li>
+        <li class="row n"><span class="keys"><kbd>]</kbd><kbd>a</kbd><span class="sep">/</span><kbd>[</kbd><kbd>a</kbd></span><span class="act">Next / previous parameter</span></li>
+        <li class="row n"><span class="keys"><kbd>]</kbd><kbd>l</kbd><span class="sep">/</span><kbd>[</kbd><kbd>l</kbd></span><span class="act">Next / previous loop</span></li>
+        <li class="row v"><span class="keys"><kbd>]</kbd><kbd>n</kbd><span class="sep">/</span><kbd>[</kbd><kbd>n</kbd></span><span class="act">Next / previous syntax node</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>c</kbd><kbd>s</kbd></span><span class="act">Swap parameter with the next one<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>c</kbd><kbd>S</kbd></span><span class="act">Swap parameter with the previous one<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd>[</kbd><kbd>;</kbd><span class="sep">/</span><kbd>]</kbd><kbd>;</kbd></span><span class="act">Start of / next context</span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>Moving around</span></div>
+
+    <section class="card">
+      <h2>Jump anywhere <span class="src">flash <span class="tag-new">new</span></span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>s</kbd></span><span class="act">Type two characters, jump to a label<span class="hint">works after an operator too: <code>ds</code>…</span></span></li>
+        <li class="row n"><span class="keys"><kbd>S</kbd></span><span class="act">Select by syntax node, with labels<span class="hint">normal &amp; operator only — visual <kbd>S</kbd> is surround</span></span></li>
+        <li class="row o"><span class="keys"><kbd>r</kbd></span><span class="act">Remote — act on a distant spot, then come back<span class="hint">e.g. <code>yr</code> yanks elsewhere without moving</span></span></li>
+        <li class="row o"><span class="keys"><kbd>R</kbd></span><span class="act">Treesitter search</span></li>
+        <li class="row n"><span class="keys"><kbd>f</kbd><span class="sep">/</span><kbd>t</kbd><span class="sep">/</span><kbd>F</kbd><span class="sep">/</span><kbd>T</kbd></span><span class="act">Normal jumps, now with labels</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Cursor &amp; scrolling <span class="src">core</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>Ctrl</kbd><kbd>d</kbd><span class="sep">/</span><kbd>Ctrl</kbd><kbd>u</kbd></span><span class="act">Half page down / up<span class="hint">stays centred</span></span></li>
+        <li class="row n"><span class="keys"><kbd>j</kbd><span class="sep">/</span><kbd>k</kbd></span><span class="act">Down / up by <em>visual</em> line<span class="hint">wrapped lines behave sensibly</span></span></li>
+        <li class="row n"><span class="keys"><kbd>[</kbd><span class="sep">/</span><kbd>]</kbd></span><span class="act">Insert a blank line above / below</span></li>
+        <li class="row n"><span class="keys"><kbd>J</kbd></span><span class="act">Join with line below<span class="hint">cursor stays put</span></span></li>
+        <li class="row v"><span class="keys"><kbd>J</kbd><span class="sep">/</span><kbd>K</kbd></span><span class="act">Move the selection down / up</span></li>
+        <li class="row v"><span class="keys"><kbd>&lt;</kbd><span class="sep">/</span><kbd>&gt;</kbd></span><span class="act">Outdent / indent, keeping the selection</span></li>
+        <li class="row v"><span class="keys"><kbd>p</kbd></span><span class="act">Paste over selection<span class="hint">without clobbering your yank</span></span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>Editing</span></div>
+
+    <section class="card">
+      <h2>Surround <span class="src">nvim-surround</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>y</kbd><kbd>s</kbd></span><span class="act">Surround a motion<span class="hint"><code>ysiw"</code> → quotes around a word</span></span></li>
+        <li class="row n"><span class="keys"><kbd>y</kbd><kbd>s</kbd><kbd>s</kbd></span><span class="act">Surround the whole line</span></li>
+        <li class="row n"><span class="keys"><kbd>c</kbd><kbd>s</kbd></span><span class="act">Change surrounding pair<span class="hint"><code>cs"'</code> → swaps quotes</span></span></li>
+        <li class="row n"><span class="keys"><kbd>d</kbd><kbd>s</kbd></span><span class="act">Delete surrounding pair</span></li>
+        <li class="row v"><span class="keys"><kbd>S</kbd></span><span class="act">Surround the visual selection</span></li>
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>g</kbd><kbd>s</kbd></span><span class="act">Surround at the cursor, in insert mode</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Comment &amp; refactor <span class="src">builtin &middot; refactoring</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>/</kbd></span><span class="act">Toggle comment<span class="hint">line in normal, selection in visual</span></span></li>
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>c</kbd><kbd>c</kbd></span><span class="act">Toggle comment line<span class="hint">builtin equivalent</span></span></li>
+        <li class="row v"><span class="keys"><kbd class="lead">Spc</kbd><kbd>r</kbd><kbd>e</kbd></span><span class="act">Extract selection to a function<span class="hint">type the name, live preview</span></span></li>
+        <li class="row v"><span class="keys"><kbd class="lead">Spc</kbd><kbd>r</kbd><kbd>f</kbd></span><span class="act">Extract to a function in a new file</span></li>
+        <li class="row v"><span class="keys"><kbd class="lead">Spc</kbd><kbd>r</kbd><kbd>v</kbd></span><span class="act">Extract to a variable</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>r</kbd><kbd>i</kbd></span><span class="act">Inline variable</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>r</kbd><kbd>I</kbd></span><span class="act">Inline function</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>r</kbd><kbd>b</kbd></span><span class="act">Extract block</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>r</kbd><kbd>B</kbd></span><span class="act">Extract block to a file</span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>Files, buffers &amp; windows</span></div>
+
+    <section class="card">
+      <h2>Navigate files <span class="src">nvim-tree &middot; oil &middot; harpoon</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>Ctrl</kbd><kbd>n</kbd></span><span class="act">Toggle the file tree sidebar</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>n</kbd></span><span class="act">Focus the file tree</span></li>
+        <li class="row n"><span class="keys"><kbd>-</kbd></span><span class="act">Edit the parent directory as a buffer<span class="hint">rename by editing text, then <code>:w</code></span><span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>h</kbd><kbd>a</kbd></span><span class="act">Pin this file to Harpoon</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>h</kbd><kbd>l</kbd></span><span class="act">Harpoon menu</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>h</kbd><kbd>1</kbd><span class="sep">…</span><kbd>9</kbd></span><span class="act">Jump to pinned file 1–9</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>h</kbd><kbd>n</kbd><span class="sep">/</span><kbd>p</kbd></span><span class="act">Next / previous pinned file</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>h</kbd><kbd>d</kbd></span><span class="act">Unpin this file</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Buffers &amp; windows <span class="src">barbar &middot; tmux-navigator</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>Tab</kbd><span class="sep">/</span><kbd>Shift</kbd><kbd>Tab</kbd></span><span class="act">Next / previous buffer</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>x</kbd></span><span class="act">Close this buffer</span></li>
+        <li class="row n"><span class="keys"><kbd>Ctrl</kbd><kbd>x</kbd></span><span class="act">Close all buffers but this one</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>b</kbd></span><span class="act">New empty buffer</span></li>
+        <li class="row n"><span class="keys"><kbd>Ctrl</kbd><kbd>h/j/k/l</kbd></span><span class="act">Move between splits <em>and</em> tmux panes<span class="hint">one set of keys for both</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>w</kbd><kbd>w</kbd></span><span class="act">Cycle to the next window</span></li>
+        <li class="row n"><span class="keys"><kbd>Ctrl</kbd><kbd>s</kbd></span><span class="act">Save file</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Sessions <span class="src">persistence <span class="tag-new">new</span></span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>p</kbd><kbd>s</kbd></span><span class="act">Restore the session for this directory<span class="hint">buffers, layout and folds</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>p</kbd><kbd>l</kbd></span><span class="act">Restore the last session, wherever it was</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>p</kbd><kbd>d</kbd></span><span class="act">Don't save this one on exit</span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>Git</span></div>
+
+    <section class="card">
+      <h2>Hunks <span class="src">gitsigns</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>]</kbd><kbd>c</kbd><span class="sep">/</span><kbd>[</kbd><kbd>c</kbd></span><span class="act">Next / previous change</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>p</kbd></span><span class="act">Preview the hunk</span></li>
+        <li class="row v"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>s</kbd></span><span class="act">Stage hunk<span class="hint">visual mode stages just the selected lines</span></span></li>
+        <li class="row v"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>r</kbd></span><span class="act">Reset hunk</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>u</kbd></span><span class="act">Unstage hunk</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>S</kbd><span class="sep">/</span><kbd>R</kbd></span><span class="act">Stage / reset the whole buffer</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>b</kbd></span><span class="act">Blame this line</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>d</kbd></span><span class="act">Diff against the index</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>D</kbd></span><span class="act">Diff against the last commit</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>g</kbd><kbd>B</kbd></span><span class="act">Open this line on GitHub<span class="tag-new">new</span></span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>AI &amp; completion</span></div>
+
+    <section class="card">
+      <h2>Ghost text <span class="src">Copilot &middot; native LSP <span class="tag-new">new</span></span></h2>
+      <ul class="rows">
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>Enter</kbd></span><span class="act">Accept the whole suggestion</span></li>
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>w</kbd></span><span class="act">Accept one word<span class="hint">falls back to delete-word when nothing is suggested</span></span></li>
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>l</kbd></span><span class="act">Accept one line<span class="hint">falls back to cursor-right</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>t</kbd><kbd>i</kbd></span><span class="act">Turn ghost text off for this buffer</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Completion menu <span class="src">nvim-cmp</span></h2>
+      <ul class="rows">
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>Space</kbd></span><span class="act">Open the completion menu</span></li>
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>n</kbd><span class="sep">/</span><kbd>Ctrl</kbd><kbd>p</kbd></span><span class="act">Next / previous item</span></li>
+        <li class="row i"><span class="keys"><kbd>Enter</kbd></span><span class="act">Confirm the selected item</span></li>
+        <li class="row i"><span class="keys"><kbd>Tab</kbd><span class="sep">/</span><kbd>Shift</kbd><kbd>Tab</kbd></span><span class="act">Next item, or jump snippet placeholder</span></li>
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>d</kbd><span class="sep">/</span><kbd>Ctrl</kbd><kbd>f</kbd></span><span class="act">Scroll the docs popup</span></li>
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>e</kbd></span><span class="act">Dismiss the menu</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Chat <span class="src">CodeCompanion &middot; Claude <span class="tag-new">new</span></span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>a</kbd><kbd>c</kbd></span><span class="act">Toggle the chat buffer<span class="hint">real Claude Code agent — it can edit files</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>a</kbd><kbd>a</kbd></span><span class="act">Action palette</span></li>
+        <li class="row v"><span class="keys"><kbd class="lead">Spc</kbd><kbd>a</kbd><kbd>d</kbd></span><span class="act">Send the selection to the chat</span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>Running &amp; debugging</span></div>
+
+    <section class="card">
+      <h2>Debugger <span class="src">nvim-dap</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd>F5</kbd></span><span class="act">Start / continue</span></li>
+        <li class="row n"><span class="keys"><kbd>F1</kbd><span class="sep">/</span><kbd>F2</kbd><span class="sep">/</span><kbd>F3</kbd></span><span class="act">Step into / over / out</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>d</kbd><kbd>b</kbd></span><span class="act">Toggle breakpoint</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>d</kbd><kbd>B</kbd></span><span class="act">Conditional breakpoint</span></li>
+        <li class="row n"><span class="keys"><kbd>F7</kbd></span><span class="act">Toggle the debug UI</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>d</kbd><kbd>v</kbd></span><span class="act">Show variable values inline in the code<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>d</kbd><kbd>r</kbd><span class="sep">/</span><kbd>c</kbd></span><span class="act">Restart / close the session</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>v</kbd><kbd>s</kbd></span><span class="act">Pick a Python virtualenv</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Terminal &amp; tmux <span class="src">toggleterm</span></h2>
+      <ul class="rows">
+        <li class="row t"><span class="keys"><kbd>Alt</kbd><kbd>i</kbd></span><span class="act">Floating terminal</span></li>
+        <li class="row t"><span class="keys"><kbd>Alt</kbd><kbd>v</kbd></span><span class="act">Terminal in a bottom split</span></li>
+        <li class="row t"><span class="keys"><kbd>Alt</kbd><kbd>h</kbd></span><span class="act">Terminal in a side split</span></li>
+        <li class="row t"><span class="keys"><kbd>Esc</kbd><kbd>Esc</kbd></span><span class="act">Back to normal mode from the terminal</span></li>
+        <li class="row n"><span class="keys"><kbd>Ctrl</kbd><kbd>f</kbd></span><span class="act">tmux sessionizer, in a new window</span></li>
+        <li class="row n"><span class="keys"><kbd>Ctrl</kbd><kbd>g</kbd></span><span class="act">tmux goto, in a new window</span></li>
+      </ul>
+    </section>
+
+    <div class="divider"><span>Toggles &amp; extras</span></div>
+
+    <section class="card">
+      <h2>Toggles <span class="src">various</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>t</kbd><kbd>n</kbd></span><span class="act">Line numbers</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>t</kbd><kbd>r</kbd></span><span class="act">Relative line numbers</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>t</kbd><kbd>h</kbd></span><span class="act">Inlay hints</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>t</kbd><kbd>i</kbd></span><span class="act">Copilot ghost text<span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>t</kbd><kbd>b</kbd></span><span class="act">Inline git blame</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>t</kbd><kbd>B</kbd></span><span class="act">Full blame view</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>t</kbd><kbd>D</kbd></span><span class="act">Show deleted lines inline</span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>z</kbd></span><span class="act">Zen mode</span></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Odds &amp; ends <span class="src">various</span></h2>
+      <ul class="rows">
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>.</kbd></span><span class="act">Scratch buffer<span class="hint">per-project, persists</span><span class="tag-new">new</span></span></li>
+        <li class="row n"><span class="keys"><kbd class="lead">Spc</kbd><kbd>m</kbd><kbd>p</kbd></span><span class="act">Markdown preview</span></li>
+        <li class="row n"><span class="keys"><kbd>g</kbd><kbd>x</kbd></span><span class="act">Open the URL or file under the cursor</span></li>
+        <li class="row n"><span class="keys"><kbd>Ctrl</kbd><kbd>c</kbd></span><span class="act">Copy the whole file</span></li>
+        <li class="row i"><span class="keys"><kbd>Ctrl</kbd><kbd>b</kbd><span class="sep">/</span><kbd>Ctrl</kbd><kbd>e</kbd></span><span class="act">Jump to start / end of line, in insert</span></li>
+      </ul>
+    </section>
+
+    <div class="note">
+      <h3>Two quirks worth remembering</h3>
+      <p>
+        <strong>In LaTeX files, <kbd class="lead">Spc</kbd><kbd>l</kbd> belongs to VimTeX.</strong>
+        Your local-leader is also Space, so VimTeX claims 22 buffer-local
+        <kbd class="lead">Spc</kbd><kbd>l</kbd>… mappings there — <kbd>l</kbd><kbd>l</kbd> compiles,
+        <kbd>l</kbd><kbd>v</kbd> views. They shadow the LSP group for that buffer only.
+      </p>
+      <p>
+        <strong>Copilot needs the proxy on a non-RU exit.</strong> Without it the server returns
+        nothing and ghost text just never appears — no error, no warning.
+      </p>
+    </div>
+
+    <p class="empty" id="empty" hidden>No mapping matches that.</p>
+
+  </div>
+
+  <footer>
+    Generated from a live dump of <code>nvim_get_keymap</code> across all modes, including
+    buffer-local mappings from LSP, gitsigns and Copilot. Anything marked
+    <span class="tag-new">new</span> arrived in the 0.12 overhaul.
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var q = document.getElementById("q");
+    var grid = document.getElementById("grid");
+    var countEl = document.getElementById("count");
+    var emptyEl = document.getElementById("empty");
+    var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+    var rows = Array.prototype.slice.call(document.querySelectorAll("li.row"));
+    var sections = Array.prototype.slice.call(document.querySelectorAll("section.card"));
+    var activeModes = [];
+
+    rows.forEach(function (r) {
+      r.dataset.text = r.textContent.replace(/\s+/g, " ").trim().toLowerCase();
+      r.dataset.isNew = r.querySelector(".tag-new") ? "1" : "0";
+    });
+    sections.forEach(function (s) {
+      s.dataset.newSection = s.querySelector("h2 .tag-new") ? "1" : "0";
+    });
+
+    function rowMatches(r, term) {
+      if (term && r.dataset.text.indexOf(term) === -1) return false;
+      if (!activeModes.length) return true;
+      var wantsNew = activeModes.indexOf("new") !== -1;
+      if (wantsNew) {
+        var isNew = r.dataset.isNew === "1" || r.closest("section").dataset.newSection === "1";
+        if (isNew && activeModes.length === 1) return true;
+        if (!isNew) return false;
+      }
+      var modeSel = activeModes.filter(function (m) { return m !== "new"; });
+      if (!modeSel.length) return true;
+      return modeSel.some(function (m) { return r.classList.contains(m); });
+    }
+
+    function apply() {
+      var term = q.value.replace(/\s+/g, " ").trim().toLowerCase();
+      var shown = 0;
+      sections.forEach(function (sec) {
+        var visible = 0;
+        Array.prototype.forEach.call(sec.querySelectorAll("li.row"), function (r) {
+          var ok = rowMatches(r, term);
+          r.hidden = !ok;
+          if (ok) { visible++; shown++; }
+        });
+        sec.hidden = visible === 0;
+      });
+      var filtering = term.length > 0 || activeModes.length > 0;
+      Array.prototype.forEach.call(grid.querySelectorAll(".divider, .note"), function (el) {
+        el.hidden = filtering;
+      });
+      emptyEl.hidden = shown !== 0;
+      countEl.textContent = filtering ? shown + " shown" : rows.length + " mappings";
+    }
+
+    q.addEventListener("input", apply);
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () {
+        var m = c.dataset.mode;
+        var i = activeModes.indexOf(m);
+        if (i === -1) { activeModes.push(m); } else { activeModes.splice(i, 1); }
+        c.setAttribute("aria-pressed", i === -1 ? "true" : "false");
+        apply();
+      });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+      if (e.key === "Escape" && document.activeElement === q) { q.value = ""; apply(); q.blur(); }
+    });
+
+    apply();
+  })();
+</script>
+</body>
+</html>

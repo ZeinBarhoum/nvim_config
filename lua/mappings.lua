@@ -113,7 +113,10 @@ map_lsp("<leader>lf", function()
 	vim.diagnostic.open_float({ border = "rounded" })
 end, "[F]loat diagnostic under cursor")
 -- map_lsp("<leader>q", vim.diagnostic.setloclist, "[Q]uickfix diagnostics list")
-map_lsp("<leader>q", require("telescope.builtin").diagnostics, "[Q]uickfix list of all diagnostics")
+-- Trouble instead of telescope.builtin.diagnostics: the panel stays open and updates
+-- live as you edit, and groups by file. `:Telescope diagnostics` still works if you
+-- want the one-shot fuzzy-filter version.
+map_lsp("<leader>q", "<cmd>Trouble diagnostics toggle<cr>", "[Q]uickfix list of all diagnostics")
 map_lsp("gd", function()
 	vim.lsp.buf.definition({ reuse_win = true })
 end, "[G]oto [D]efinition")

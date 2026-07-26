@@ -15,6 +15,9 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<leader>l", group = "[L]SP" },
 			{ "<leader>g", group = "[G]it hunk", mode = { "n", "v" } },
 			{ "<leader>h", group = "[H]arpoon" },
+			{ "<leader>X", group = "Trouble" },
+			{ "<leader>p", group = "[P]ersistence (sessions)" },
+			{ "<leader>a", group = "[A]I (CodeCompanion)", mode = { "n", "v" } },
 
 			-- vim-tmux-navigator creates these itself in plugin/tmux_navigator.vim with
 			-- no desc, replacing lazy's `keys` placeholders once it loads. These entries

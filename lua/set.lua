@@ -31,8 +31,8 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.pumheight = 10 -- limit completion items
 vim.opt.laststatus = 3
-vim.wo.foldmethod = "expr"
-vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+-- foldmethod/foldexpr are set per-window in the treesitter FileType autocmd,
+-- so buffers without a parser keep normal folding
 vim.o.foldlevel = 99
 vim.g.transparent_background = false
 
@@ -40,13 +40,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
-		vim.highlight.on_yank()
+		vim.hl.on_yank()
 	end,
 })
 
 vim.cmd([[
   autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
-  autocmd FileType cpp,xml,cmake setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab autoindent
+  autocmd FileType cpp,xml,cmake setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
 ]])
 
 -- for .launch files on ROS

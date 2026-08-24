@@ -7,12 +7,27 @@ return { -- Useful plugin to show you pending keybinds.
 		-- Document existing key chains
 		require("which-key").add({
 			{ "<leader>c", group = "[C]ode" },
-			{ "<leader>d", group = "[D]ocument" },
-			{ "<leader>r", group = "[R]ename" },
+			{ "<leader>d", group = "[D]ebug" },
+			{ "<leader>r", group = "[R]efactor / [R]ename" },
 			{ "<leader>f", group = "[F]ind" },
-			{ "<leader>w", group = "[W]orkspace" },
+			{ "<leader>w", group = "[W]indow" },
 			{ "<leader>t", group = "[T]oggle" },
-			{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+			{ "<leader>l", group = "[L]SP" },
+			{ "<leader>g", group = "[G]it hunk", mode = { "n", "v" } },
+			{ "<leader>h", group = "[H]arpoon" },
+			{ "<leader>X", group = "Trouble" },
+			{ "<leader>p", group = "[P]ersistence (sessions)" },
+			{ "<leader>a", group = "[A]I (CodeCompanion)", mode = { "n", "v" } },
+
+			-- vim-tmux-navigator creates these itself in plugin/tmux_navigator.vim with
+			-- no desc, replacing lazy's `keys` placeholders once it loads. These entries
+			-- carry no rhs, so which-key labels them without remapping and the plugin
+			-- keeps ownership (including its terminal-mode fzf guard).
+			{ "<C-h>", desc = "Go to window/tmux pane left" },
+			{ "<C-j>", desc = "Go to window/tmux pane below" },
+			{ "<C-k>", desc = "Go to window/tmux pane above" },
+			{ "<C-l>", desc = "Go to window/tmux pane right" },
+			{ "<C-\\>", desc = "Go to previous window/tmux pane" },
 		})
 	end,
 }

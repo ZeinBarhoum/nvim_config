@@ -4,22 +4,23 @@ return {
 		"neovim/nvim-lspconfig",
 		"mfussenegger/nvim-dap",
 		"mfussenegger/nvim-dap-python", --optional
-		{ "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
 	},
 	lazy = false,
 	config = function()
+		-- NOTE: setup() merges its argument straight onto the defaults, so `search`
+		-- must be top-level. Wrapping it in `settings = { ... }` silently orphans it.
 		require("venv-selector").setup({
-			settings = {
-				search = {
-					micromamba = {
-						command = "fd --full-path '.*/python$' --type symlink ~/micromamba/envs",
-					},
-					mamba = {
-						command = "fd --full-path '.*/python$' --type symlink ~/mamba/envs",
-					},
-					conda = {
-						command = "fd --full-path '.*/python$' --type symlink ~/conda/envs",
-					},
+			-- `$FD` is substituted with the detected fd binary; hardcoding "fd"
+			-- breaks on Debian/Ubuntu, where the binary is named `fdfind`.
+			search = {
+				micromamba = {
+					command = "$FD --full-path '.*/python$' --type symlink ~/micromamba/envs",
+				},
+				mamba = {
+					command = "$FD --full-path '.*/python$' --type symlink ~/mamba/envs",
+				},
+				conda = {
+					command = "$FD --full-path '.*/python$' --type symlink ~/conda/envs",
 				},
 			},
 		})

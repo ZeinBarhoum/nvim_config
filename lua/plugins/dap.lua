@@ -4,9 +4,11 @@ return {
 	dependencies = {
 		"rcarriga/nvim-dap-ui",
 		"nvim-neotest/nvim-nio",
-		"williamboman/mason.nvim",
+		"mason-org/mason.nvim",
 		"jay-babu/mason-nvim-dap.nvim",
 		"mfussenegger/nvim-dap-python",
+		-- Shows variable values inline next to the code while stopped at a breakpoint
+		{ "theHamsta/nvim-dap-virtual-text", opts = {} },
 	},
 	keys = function(_, keys)
 		local dap = require("dap")
@@ -30,6 +32,13 @@ return {
 			{ "<leader>dc", dap.close, desc = "Debug: Close" },
 			{ "<leader>duo", dapui.open, desc = "Debug: Open UI" },
 			{ "<leader>duc", dapui.close, desc = "Debug: Close UI" },
+			{
+				"<leader>dv",
+				function()
+					require("nvim-dap-virtual-text").toggle()
+				end,
+				desc = "Debug: Toggle inline [V]ariable values",
+			},
 			-- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
 			{ "<F7>", dapui.toggle, desc = "Debug: See last session result." },
 			unpack(keys),
